@@ -17,12 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var containerViewController : ContainerViewController?
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: NSDictionary?) -> Bool {
-//        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-//        // Override point for customization after application launch.
-//        self.window!.backgroundColor = UIColor.whiteColor()
-//        self.window!.makeKeyAndVisible()
         self.containerViewController = self.window!.rootViewController as? ContainerViewController
-        println(self.window!.rootViewController)
         return true
     }
 

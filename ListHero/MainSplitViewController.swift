@@ -17,7 +17,7 @@ class MainSplitViewController: UISplitViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.preferredDisplayMode = UISplitViewControllerDisplayMode.AllVisible;
         // Do any additional setup after loading the view.
     }
 
@@ -26,34 +26,14 @@ class MainSplitViewController: UISplitViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // #pragma mark - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue?, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
-//    override func collapseSecondaryViewController(secondaryViewController: UIViewController!, forSplitViewController splitViewController: UISplitViewController!) {
-//        
-//    }
-//    
-//    override func separateSecondaryViewControllerForSplitViewController(splitViewController: UISplitViewController!) -> UIViewController! {
-//        return ChecklistViewController()
-//    }
-//    
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection!) {
-        println("trait collection previous - \(previousTraitCollection)")
+        if (self.view.bounds.size.width > 320.0) {
+            var delegate = UIApplication.sharedApplication().delegate as AppDelegate
+            delegate.containerViewController?.setOverrideTraitCollection(UITraitCollection(traitsFromCollections: [UITraitCollection(horizontalSizeClass: UIUserInterfaceSizeClass.Regular)]), forChildViewController: self);
+        }
     }
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator!) {
-        if (size.width > 320.0) {
-            //            self.forcedTraitCollection = UITraitCollection(horizontalSizeClass: UIUserInterfaceSizeClass.Regular)
-        }
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-        //        self.setOverrideTraitCollection(self.forcedTraitCollection, forChildViewController: self.mainSplitViewController)
     }
 }
