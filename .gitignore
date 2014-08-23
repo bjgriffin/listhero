@@ -6,3 +6,12 @@
 #
 # Pods/
 
+# Exclude OS X folder attributes
+.DS_Store
+
+#----------
+xcuserdata
+CalendarDraw.xcodeproj/xcuserdata/bjgriffin.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+CalendarDraw.xcodeproj/project.xcworkspace/xcshareddata/
+CalendarDraw.xcodeproj/project.xcworkspace/xcuserdata/bjgriffin.xcuserdatad/UserInterfaceState.xcuserstate
+
