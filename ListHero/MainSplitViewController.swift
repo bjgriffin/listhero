@@ -10,7 +10,7 @@ import UIKit
 
 class MainSplitViewController: UISplitViewController {
 
-    init(coder aDecoder: NSCoder!)
+    required init(coder aDecoder: NSCoder!)
     {
         super.init(coder: aDecoder)
     }
@@ -35,5 +35,9 @@ class MainSplitViewController: UISplitViewController {
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator!) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    }
+    
+    func primaryViewControllerForCollapsingSplitViewController(splitViewController: UISplitViewController!) -> UIViewController! {
+        return self.viewControllers[1] as UIViewController;
     }
 }
