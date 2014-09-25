@@ -40,12 +40,14 @@
 		3675CEAD19BFB56A0009FA9E /* user-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3675CEAC19BFB56A0009FA9E /* user-icon@2x.png */; };
 		368CDF3719C863DE00624264 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368CDF3619C863DE00624264 /* MainTabBarController.swift */; };
 		368CDF3D19C868F000624264 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368CDF3C19C868F000624264 /* ProfileTableViewController.swift */; };
+		36922C1019D217B00002DC29 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36922C0F19D217B00002DC29 /* List.swift */; };
+		36922C1219D217BF0002DC29 /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36922C1119D217BF0002DC29 /* ListItem.swift */; };
 		36933AA519760CB70015FD2F /* ChecklistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36933AA419760CB70015FD2F /* ChecklistViewController.swift */; };
 		36933AA619760CB70015FD2F /* ChecklistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36933AA419760CB70015FD2F /* ChecklistViewController.swift */; };
+		3698CA3419CD241200D273AE /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3698CA3319CD241200D273AE /* SyncManager.swift */; };
 		369A908219C768DC00568D79 /* ListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369A908119C768DC00568D79 /* ListsViewController.swift */; };
 		36AD6B52196F77A300EAFBED /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AD6B51196F77A300EAFBED /* MainSplitViewController.swift */; };
 		36AD6B53196F77A300EAFBED /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AD6B51196F77A300EAFBED /* MainSplitViewController.swift */; };
-		36B8048E19C22DDC003DCD6B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B8048D19C22DDC003DCD6B /* User.swift */; };
 		36BEF3B419C0CB2F00C3E266 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36BEF3B319C0CB2F00C3E266 /* CoreDataManager.swift */; };
 		36D0673D19BF889900A785C4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36D0673C19BF889900A785C4 /* AudioToolbox.framework */; };
 		36D0673F19BF88AF00A785C4 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36D0673E19BF88AF00A785C4 /* CFNetwork.framework */; };
@@ -106,14 +108,16 @@
 		3618994419BE4B6C00EA7229 /* incomplete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = incomplete.png; sourceTree = "<group>"; };
 		366EC6611972456000FFA9EF /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		366F14BE19CB66DF000DA3A6 /* ChangeEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewController.swift; sourceTree = "<group>"; };
-		366F14C019CB75F7000DA3A6 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		366F14C019CB75F7000DA3A6 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChangePasswordViewController.swift; path = ../ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		3675CEAC19BFB56A0009FA9E /* user-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user-icon@2x.png"; sourceTree = "<group>"; };
 		368CDF3619C863DE00624264 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		368CDF3C19C868F000624264 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
+		36922C0F19D217B00002DC29 /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = List.swift; path = ../List.swift; sourceTree = "<group>"; };
+		36922C1119D217BF0002DC29 /* ListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListItem.swift; path = ../ListItem.swift; sourceTree = "<group>"; };
 		36933AA419760CB70015FD2F /* ChecklistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChecklistViewController.swift; sourceTree = "<group>"; };
+		3698CA3319CD241200D273AE /* SyncManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncManager.swift; sourceTree = "<group>"; };
 		369A908119C768DC00568D79 /* ListsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListsViewController.swift; sourceTree = "<group>"; };
 		36AD6B51196F77A300EAFBED /* MainSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
-		36B8048D19C22DDC003DCD6B /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		36BEF3B319C0CB2F00C3E266 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		36D0673C19BF889900A785C4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		36D0673E19BF88AF00A785C4 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -219,13 +223,12 @@
 				36D0673C19BF889900A785C4 /* AudioToolbox.framework */,
 			);
 			name = Frameworks;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		36E810CF196E1BE30090F951 = {
 			isa = PBXGroup;
 			children = (
-				366F14C019CB75F7000DA3A6 /* ChangePasswordViewController.swift */,
-				36D0675219BF89B600A785C4 /* Frameworks */,
 				36E810DA196E1BE30090F951 /* ListHero */,
 				36E810EB196E1BE40090F951 /* ListHeroTests */,
 				36E810D9196E1BE30090F951 /* Products */,
@@ -251,16 +254,20 @@
 				36AD6B51196F77A300EAFBED /* MainSplitViewController.swift */,
 				366EC6611972456000FFA9EF /* ContainerViewController.swift */,
 				36933AA419760CB70015FD2F /* ChecklistViewController.swift */,
-				36E810E2196E1BE30090F951 /* Images.xcassets */,
-				36E810DF196E1BE30090F951 /* ListHero.xcdatamodeld */,
-				36B8048D19C22DDC003DCD6B /* User.swift */,
-				36E810DB196E1BE30090F951 /* Supporting Files */,
+				36922C1119D217BF0002DC29 /* ListItem.swift */,
+				36922C0F19D217B00002DC29 /* List.swift */,
+				3698CA3319CD241200D273AE /* SyncManager.swift */,
 				36BEF3B319C0CB2F00C3E266 /* CoreDataManager.swift */,
 				360A76C119C29F4C00492502 /* UserManager.swift */,
 				369A908119C768DC00568D79 /* ListsViewController.swift */,
 				368CDF3619C863DE00624264 /* MainTabBarController.swift */,
 				368CDF3C19C868F000624264 /* ProfileTableViewController.swift */,
+				366F14C019CB75F7000DA3A6 /* ChangePasswordViewController.swift */,
 				366F14BE19CB66DF000DA3A6 /* ChangeEmailViewController.swift */,
+				36E810E2196E1BE30090F951 /* Images.xcassets */,
+				36E810DF196E1BE30090F951 /* ListHero.xcdatamodeld */,
+				36D0675219BF89B600A785C4 /* Frameworks */,
+				36E810DB196E1BE30090F951 /* Supporting Files */,
 			);
 			path = ListHero;
 			sourceTree = "<group>";
@@ -415,16 +422,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36922C1219D217BF0002DC29 /* ListItem.swift in Sources */,
 				36BEF3B419C0CB2F00C3E266 /* CoreDataManager.swift in Sources */,
 				36E810DE196E1BE30090F951 /* AppDelegate.swift in Sources */,
+				3698CA3419CD241200D273AE /* SyncManager.swift in Sources */,
 				368CDF3719C863DE00624264 /* MainTabBarController.swift in Sources */,
 				36E810E1196E1BE30090F951 /* ListHero.xcdatamodeld in Sources */,
 				366EC6621972456000FFA9EF /* ContainerViewController.swift in Sources */,
 				36933AA519760CB70015FD2F /* ChecklistViewController.swift in Sources */,
 				366F14C119CB75F7000DA3A6 /* ChangePasswordViewController.swift in Sources */,
 				36AD6B52196F77A300EAFBED /* MainSplitViewController.swift in Sources */,
+				36922C1019D217B00002DC29 /* List.swift in Sources */,
 				360A76C219C29F4C00492502 /* UserManager.swift in Sources */,
-				36B8048E19C22DDC003DCD6B /* User.swift in Sources */,
 				368CDF3D19C868F000624264 /* ProfileTableViewController.swift in Sources */,
 				369A908219C768DC00568D79 /* ListsViewController.swift in Sources */,
 				366F14BF19CB66DF000DA3A6 /* ChangeEmailViewController.swift in Sources */,

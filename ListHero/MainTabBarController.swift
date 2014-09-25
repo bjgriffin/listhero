@@ -16,10 +16,10 @@ class MainTabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if (userDefaults.objectForKey("currentUser") == nil) {
-            self.signedOutSetup(false)
-        } else {
+        if let user:PFUser = PFUser.currentUser() {
             self.signedInSetup()
+        } else {
+            self.signedOutSetup(false)
         }
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "signedInNotification:", name:"signedIn", object: nil)
     }
@@ -54,7 +54,7 @@ class MainTabBarController: UITabBarController {
     
     func signedOutSetup(performLogOut: Bool) {
         if performLogOut {
-            userDefaults.setValue(nil, forKey: "currentUser")
+            userDefaults.setValue("anonymous", forKey: "currentUser")
             PFUser.logOut()
         }
         if !barButtonsArray.containsObject(self.profileBarButttonItem) {

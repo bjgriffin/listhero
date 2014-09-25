@@ -15,15 +15,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let storyboard : UIStoryboard = UIStoryboard(name: "MainStoryboard", bundle: nil);
     var containerViewController : ContainerViewController?
+    var syncManager = SyncManager.sharedInstance
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: NSDictionary?) -> Bool {
         Parse.setApplicationId("C5ajjGiFo0SamAC4bin6DHiSO9SQdpove7llmmgg", clientKey: "mo8Su2bCJcvuc1r2sAJ70mqKQormqS2jctfjD2ZI");
         
-//        var testObject:PFObject = PFObject(className:"TestObject")
-//        testObject["foo"] = "bar"
-//        testObject.setObject("user1", forKey: "user")
-//        testObject.saveInBackground()
-        
+        //Save currentUser to either anonymous or current user
+//        let userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+//        userDefaults.setObject((PFUser.currentUser() != nil ? PFUser.currentUser().objectId : "anonymous"), forKey: "currentUser")
+//        
+//        self.syncManager.sync()
+//        
         self.containerViewController = self.window!.rootViewController as? ContainerViewController
         return true
     }

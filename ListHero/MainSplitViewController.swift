@@ -10,7 +10,7 @@ import UIKit
 
 class MainSplitViewController: UISplitViewController {
 
-    required init(coder aDecoder: NSCoder!)
+    required init(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
     }
@@ -26,14 +26,15 @@ class MainSplitViewController: UISplitViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection!) {
-        if (self.view.bounds.size.width > 320.0) {
-            var delegate = UIApplication.sharedApplication().delegate as AppDelegate
-            delegate.containerViewController?.setOverrideTraitCollection(UITraitCollection(traitsFromCollections: [UITraitCollection(horizontalSizeClass: UIUserInterfaceSizeClass.Regular)]), forChildViewController: self);
-        }
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection) {
+        var delegate = UIApplication.sharedApplication().delegate as AppDelegate
+        var shouldBeRegularSizeClass:Bool = self.view.bounds.size.width > 320.0
+        var traitCollection:UITraitCollection = shouldBeRegularSizeClass ? UITraitCollection(horizontalSizeClass: UIUserInterfaceSizeClass.Regular) : UITraitCollection(horizontalSizeClass: UIUserInterfaceSizeClass.Compact)
+        
+        delegate.containerViewController!.setOverrideTraitCollection(traitCollection, forChildViewController: self);
     }
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator!) {
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
     }
     

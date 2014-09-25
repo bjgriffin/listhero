@@ -43,7 +43,6 @@
         <!--Change Email View Controller-->
         <scene sceneID="inU-OL-BpA">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9dt-YQ-IJD" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="Qrc-0p-hd8" customClass="ChangeEmailViewController" customModule="ListHero" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3oL-yw-QK1"/>
@@ -119,6 +118,7 @@
                         </constraints>
                     </view>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9dt-YQ-IJD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1776" y="-2008"/>
         </scene>
@@ -492,6 +492,7 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="navItem" destination="r9U-Ue-ZJi" id="9QR-j8-4tG"/>
                         <outlet property="tableView" destination="ck6-Zc-6X5" id="BQj-hZ-753"/>
                         <outlet property="view" destination="OeE-pk-osB" id="hhd-VG-xqK"/>
                     </connections>

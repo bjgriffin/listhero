@@ -10,6 +10,10 @@ import CoreData
 
 class ChecklistViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var navItem: UINavigationItem!
+    lazy var currentList = List()
+    lazy var coreDataManager = CoreDataManager.sharedInstance
+    lazy var syncManager = SyncManager.sharedInstance
 
     required init(coder aDecoder: NSCoder)
     {
@@ -23,18 +27,15 @@ class ChecklistViewController: UIViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-//        var managedObjectContext:NSManagedObjectContext = self.coreDataManager.masterManagedObjectContext!
-//        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: "User")
-//        var objecs:NSArray = managedObjectContext.executeFetchRequest(fetchRequest, error: nil)
-//        println("\(objecs.objectAtIndex(0))")
-        
         let userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         
         if (userDefaults.objectForKey("signupShown") == nil) {
             self.showSignUpAlert()
             userDefaults.setObject(1, forKey: "signupShown")
-            if (PFUser.currentUser().objectId != nil) {
-                userDefaults.setObject("\(PFUser.currentUser().objectId)", forKey: "currentUser")
+            if let user:PFUser = PFUser.currentUser() {
+                userDefaults.setObject("\(user.objectId)", forKey: "currentUser")
+            } else {
+                userDefaults.setObject("anonymous", forKey: "currentUser")
             }
             userDefaults.synchronize()
         }
@@ -51,6 +52,10 @@ class ChecklistViewController: UIViewController {
             textField in
             textField.placeholder = "item name"
         })
+        alertController.addTextFieldWithConfigurationHandler({
+            textField in
+            textField.placeholder = "notes (optional)"
+        })
         alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: {
             alertAction in
             alertController.dismissViewControllerAnimated(true, completion: nil)
@@ -58,10 +63,14 @@ class ChecklistViewController: UIViewController {
         alertController.addAction(UIAlertAction(title: "Add", style: UIAlertActionStyle.Default, handler: {
             alertAction in
             let textFields:NSArray = alertController.textFields!
-            let textField:UITextField = textFields.objectAtIndex(0) as UITextField
+            let nameTextField:UITextField = textFields.objectAtIndex(0) as UITextField
+            let notesTextField:UITextField = textFields.objectAtIndex(1) as UITextField
             
-            let item:String = textField.text
-            //TODO - Add Item Implementation
+            let itemName:String = nameTextField.text
+            let notes:String = notesTextField.text
+            self.currentList = self.syncManager.fetchLists().lastObject as List
+            
+            self.syncManager.createItem(itemName, list: self.currentList, details: notes)
         }))
         self.presentViewController(alertController, animated: false, completion: nil)
     }
@@ -73,6 +82,10 @@ class ChecklistViewController: UIViewController {
             textField in
             textField.placeholder = "list name"
         })
+        alertController.addTextFieldWithConfigurationHandler({
+            textField in
+            textField.placeholder = "category (optional)"
+        })
         alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: {
             alertAction in
             alertController.dismissViewControllerAnimated(true, completion: nil)
@@ -80,10 +93,13 @@ class ChecklistViewController: UIViewController {
         alertController.addAction(UIAlertAction(title: "Add", style: UIAlertActionStyle.Default, handler: {
             alertAction in
             let textFields:NSArray = alertController.textFields!
-            let textField:UITextField = textFields.objectAtIndex(0) as UITextField
+            let nameTextField:UITextField = textFields.objectAtIndex(0) as UITextField
+            let categoryTextField:UITextField = textFields.objectAtIndex(0) as UITextField
             
-            let list:String = textField.text
-            //TODO - Add List Implementation
+            let name:String = nameTextField.text
+            let category:String = categoryTextField.text
+
+            self.syncManager.createList(name, category: category)
         }))
         self.presentViewController(alertController, animated: false, completion: nil)
     }
@@ -93,11 +109,19 @@ class ChecklistViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection) {
+        var array:NSArray = [self.navItem.rightBarButtonItem!,UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: nil, action:nil)]
+        
+        if self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Compact {
+            self.navigationItem.setRightBarButtonItems(array, animated: false)
+        } else {
+            self.navItem.setRightBarButtonItems(array, animated: false)
+        }
+    }
+    
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         if (size.width > 320.0) {
-            //            self.forcedTraitCollection = UITraitCollection(horizontalSizeClass: UIUserInterfaceSizeClass.Regular)
         }
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-        //        self.setOverrideTraitCollection(self.forcedTraitCollection, forChildViewController: self.mainSplitViewController)
     }
 }
