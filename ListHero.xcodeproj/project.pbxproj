@@ -33,6 +33,16 @@
 		3618995B19BE4B6C00EA7229 /* star-icon-unfavorited.png in Resources */ = {isa = PBXBuildFile; fileRef = 3618994219BE4B6C00EA7229 /* star-icon-unfavorited.png */; };
 		3618995C19BE4B6C00EA7229 /* complete.png in Resources */ = {isa = PBXBuildFile; fileRef = 3618994319BE4B6C00EA7229 /* complete.png */; };
 		3618995D19BE4B6C00EA7229 /* incomplete.png in Resources */ = {isa = PBXBuildFile; fileRef = 3618994419BE4B6C00EA7229 /* incomplete.png */; };
+		3626C8E419D9EC9D0098452D /* NSManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3626C8E319D9EC9D0098452D /* NSManagedObjectExtension.swift */; };
+		3656DFF919DA3B5F0058B435 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3656DFF819DA3B5F0058B435 /* FavoritesViewController.swift */; };
+		366E656919D4A2B0006023FB /* ListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 366E656819D4A2B0006023FB /* ListTableViewCell.xib */; };
+		366E656B19D4A68E006023FB /* FavoriteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 366E656A19D4A68E006023FB /* FavoriteTableViewCell.xib */; };
+		366E656D19D4AC20006023FB /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E656C19D4AC20006023FB /* ListTableViewCell.swift */; };
+		366E656F19D4AC49006023FB /* FavoriteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E656E19D4AC49006023FB /* FavoriteTableViewCell.swift */; };
+		366E657219D4AD6D006023FB /* edit-pen-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 366E657019D4AD6D006023FB /* edit-pen-icon.png */; };
+		366E657319D4AD6D006023FB /* edit-pen-icon@2x 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 366E657119D4AD6D006023FB /* edit-pen-icon@2x 2.png */; };
+		366E657519D4AD96006023FB /* DrawerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 366E657419D4AD96006023FB /* DrawerTableViewCell.xib */; };
+		366E657719D4AE51006023FB /* DrawerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366E657619D4AE51006023FB /* DrawerTableViewCell.swift */; };
 		366EC6621972456000FFA9EF /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366EC6611972456000FFA9EF /* ContainerViewController.swift */; };
 		366EC6631972456000FFA9EF /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366EC6611972456000FFA9EF /* ContainerViewController.swift */; };
 		366F14BF19CB66DF000DA3A6 /* ChangeEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366F14BE19CB66DF000DA3A6 /* ChangeEmailViewController.swift */; };
@@ -106,6 +116,16 @@
 		3618994219BE4B6C00EA7229 /* star-icon-unfavorited.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star-icon-unfavorited.png"; sourceTree = "<group>"; };
 		3618994319BE4B6C00EA7229 /* complete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = complete.png; sourceTree = "<group>"; };
 		3618994419BE4B6C00EA7229 /* incomplete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = incomplete.png; sourceTree = "<group>"; };
+		3626C8E319D9EC9D0098452D /* NSManagedObjectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObjectExtension.swift; sourceTree = "<group>"; };
+		3656DFF819DA3B5F0058B435 /* FavoritesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
+		366E656819D4A2B0006023FB /* ListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListTableViewCell.xib; sourceTree = "<group>"; };
+		366E656A19D4A68E006023FB /* FavoriteTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoriteTableViewCell.xib; sourceTree = "<group>"; };
+		366E656C19D4AC20006023FB /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
+		366E656E19D4AC49006023FB /* FavoriteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteTableViewCell.swift; sourceTree = "<group>"; };
+		366E657019D4AD6D006023FB /* edit-pen-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit-pen-icon.png"; sourceTree = "<group>"; };
+		366E657119D4AD6D006023FB /* edit-pen-icon@2x 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "edit-pen-icon@2x 2.png"; sourceTree = "<group>"; };
+		366E657419D4AD96006023FB /* DrawerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrawerTableViewCell.xib; sourceTree = "<group>"; };
+		366E657619D4AE51006023FB /* DrawerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerTableViewCell.swift; sourceTree = "<group>"; };
 		366EC6611972456000FFA9EF /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		366F14BE19CB66DF000DA3A6 /* ChangeEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeEmailViewController.swift; sourceTree = "<group>"; };
 		366F14C019CB75F7000DA3A6 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChangePasswordViewController.swift; path = ../ChangePasswordViewController.swift; sourceTree = "<group>"; };
@@ -176,6 +196,8 @@
 		3618992B19BE4B5000EA7229 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				366E657019D4AD6D006023FB /* edit-pen-icon.png */,
+				366E657119D4AD6D006023FB /* edit-pen-icon@2x 2.png */,
 				3618992C19BE4B6C00EA7229 /* complete@2x.png */,
 				3675CEAC19BFB56A0009FA9E /* user-icon@2x.png */,
 				3618992D19BE4B6C00EA7229 /* incomplete@2x.png */,
@@ -204,6 +226,56 @@
 				3618994419BE4B6C00EA7229 /* incomplete.png */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		366E656419D49D00006023FB /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				36AD6B51196F77A300EAFBED /* MainSplitViewController.swift */,
+				368CDF3619C863DE00624264 /* MainTabBarController.swift */,
+				36933AA419760CB70015FD2F /* ChecklistViewController.swift */,
+				366EC6611972456000FFA9EF /* ContainerViewController.swift */,
+				369A908119C768DC00568D79 /* ListsViewController.swift */,
+				368CDF3C19C868F000624264 /* ProfileTableViewController.swift */,
+				366F14C019CB75F7000DA3A6 /* ChangePasswordViewController.swift */,
+				366F14BE19CB66DF000DA3A6 /* ChangeEmailViewController.swift */,
+				3656DFF819DA3B5F0058B435 /* FavoritesViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		366E656519D49D40006023FB /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				36E810DF196E1BE30090F951 /* ListHero.xcdatamodeld */,
+				36922C0F19D217B00002DC29 /* List.swift */,
+				36922C1119D217BF0002DC29 /* ListItem.swift */,
+				3626C8E319D9EC9D0098452D /* NSManagedObjectExtension.swift */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
+		366E656619D49D82006023FB /* CustomCells */ = {
+			isa = PBXGroup;
+			children = (
+				366E656819D4A2B0006023FB /* ListTableViewCell.xib */,
+				366E656C19D4AC20006023FB /* ListTableViewCell.swift */,
+				366E656A19D4A68E006023FB /* FavoriteTableViewCell.xib */,
+				366E656E19D4AC49006023FB /* FavoriteTableViewCell.swift */,
+				366E657419D4AD96006023FB /* DrawerTableViewCell.xib */,
+				366E657619D4AE51006023FB /* DrawerTableViewCell.swift */,
+			);
+			name = CustomCells;
+			sourceTree = "<group>";
+		};
+		366E656719D49DDF006023FB /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				3698CA3319CD241200D273AE /* SyncManager.swift */,
+				36BEF3B319C0CB2F00C3E266 /* CoreDataManager.swift */,
+				360A76C119C29F4C00492502 /* UserManager.swift */,
+			);
+			name = Managers;
 			sourceTree = "<group>";
 		};
 		36D0675219BF89B600A785C4 /* Frameworks */ = {
@@ -247,25 +319,15 @@
 		36E810DA196E1BE30090F951 /* ListHero */ = {
 			isa = PBXGroup;
 			children = (
-				36D0675319BF89FA00A785C4 /* ListHero-Bridging-Header.h */,
+				366E656719D49DDF006023FB /* Managers */,
+				366E656619D49D82006023FB /* CustomCells */,
+				366E656519D49D40006023FB /* CoreData */,
+				366E656419D49D00006023FB /* ViewControllers */,
 				3618992B19BE4B5000EA7229 /* Resources */,
 				36E810DD196E1BE30090F951 /* AppDelegate.swift */,
+				36D0675319BF89FA00A785C4 /* ListHero-Bridging-Header.h */,
 				36E810F8196E28ED0090F951 /* MainStoryboard.storyboard */,
-				36AD6B51196F77A300EAFBED /* MainSplitViewController.swift */,
-				366EC6611972456000FFA9EF /* ContainerViewController.swift */,
-				36933AA419760CB70015FD2F /* ChecklistViewController.swift */,
-				36922C1119D217BF0002DC29 /* ListItem.swift */,
-				36922C0F19D217B00002DC29 /* List.swift */,
-				3698CA3319CD241200D273AE /* SyncManager.swift */,
-				36BEF3B319C0CB2F00C3E266 /* CoreDataManager.swift */,
-				360A76C119C29F4C00492502 /* UserManager.swift */,
-				369A908119C768DC00568D79 /* ListsViewController.swift */,
-				368CDF3619C863DE00624264 /* MainTabBarController.swift */,
-				368CDF3C19C868F000624264 /* ProfileTableViewController.swift */,
-				366F14C019CB75F7000DA3A6 /* ChangePasswordViewController.swift */,
-				366F14BE19CB66DF000DA3A6 /* ChangeEmailViewController.swift */,
 				36E810E2196E1BE30090F951 /* Images.xcassets */,
-				36E810DF196E1BE30090F951 /* ListHero.xcdatamodeld */,
 				36D0675219BF89B600A785C4 /* Frameworks */,
 				36E810DB196E1BE30090F951 /* Supporting Files */,
 			);
@@ -393,10 +455,14 @@
 				3618994D19BE4B6C00EA7229 /* plus-icon-selected@2x.png in Resources */,
 				3618994C19BE4B6C00EA7229 /* plus-icon-normal@2x.png in Resources */,
 				3618994619BE4B6C00EA7229 /* incomplete@2x.png in Resources */,
+				366E657319D4AD6D006023FB /* edit-pen-icon@2x 2.png in Resources */,
+				366E657519D4AD96006023FB /* DrawerTableViewCell.xib in Resources */,
+				366E656B19D4A68E006023FB /* FavoriteTableViewCell.xib in Resources */,
 				3618995D19BE4B6C00EA7229 /* incomplete.png in Resources */,
 				3675CEAD19BFB56A0009FA9E /* user-icon@2x.png in Resources */,
 				3618994719BE4B6C00EA7229 /* ios7-plus-icon-selected@2x.png in Resources */,
 				3618995719BE4B6C00EA7229 /* list-hero-button-normal.png in Resources */,
+				366E657219D4AD6D006023FB /* edit-pen-icon.png in Resources */,
 				3618995619BE4B6C00EA7229 /* list-hero-bg-blue.png in Resources */,
 				3618995319BE4B6C00EA7229 /* plus-icon-normal.png in Resources */,
 				36E810F9196E28ED0090F951 /* MainStoryboard.storyboard in Resources */,
@@ -404,6 +470,7 @@
 				3618994B19BE4B6C00EA7229 /* list-hero-button-selected@2x.png in Resources */,
 				3618994819BE4B6C00EA7229 /* ios7-plus-icon@2x.png in Resources */,
 				3618995919BE4B6C00EA7229 /* ListHeroLogo.png in Resources */,
+				366E656919D4A2B0006023FB /* ListTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,10 +490,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				36922C1219D217BF0002DC29 /* ListItem.swift in Sources */,
+				366E656D19D4AC20006023FB /* ListTableViewCell.swift in Sources */,
+				3626C8E419D9EC9D0098452D /* NSManagedObjectExtension.swift in Sources */,
 				36BEF3B419C0CB2F00C3E266 /* CoreDataManager.swift in Sources */,
 				36E810DE196E1BE30090F951 /* AppDelegate.swift in Sources */,
 				3698CA3419CD241200D273AE /* SyncManager.swift in Sources */,
 				368CDF3719C863DE00624264 /* MainTabBarController.swift in Sources */,
+				366E656F19D4AC49006023FB /* FavoriteTableViewCell.swift in Sources */,
 				36E810E1196E1BE30090F951 /* ListHero.xcdatamodeld in Sources */,
 				366EC6621972456000FFA9EF /* ContainerViewController.swift in Sources */,
 				36933AA519760CB70015FD2F /* ChecklistViewController.swift in Sources */,
@@ -434,8 +504,10 @@
 				36AD6B52196F77A300EAFBED /* MainSplitViewController.swift in Sources */,
 				36922C1019D217B00002DC29 /* List.swift in Sources */,
 				360A76C219C29F4C00492502 /* UserManager.swift in Sources */,
+				366E657719D4AE51006023FB /* DrawerTableViewCell.swift in Sources */,
 				368CDF3D19C868F000624264 /* ProfileTableViewController.swift in Sources */,
 				369A908219C768DC00568D79 /* ListsViewController.swift in Sources */,
+				3656DFF919DA3B5F0058B435 /* FavoritesViewController.swift in Sources */,
 				366F14BF19CB66DF000DA3A6 /* ChangeEmailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="EoE-hR-agG">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="EoE-hR-agG">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -8,7 +8,7 @@
         <!--Favorites-->
         <scene sceneID="ni8-LS-wdo">
             <objects>
-                <viewController title="Favorites" id="8TJ-9z-FxA" sceneMemberID="viewController">
+                <viewController title="Favorites" id="8TJ-9z-FxA" customClass="FavoritesViewController" customModule="ListHero" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6K5-P4-7DG"/>
                         <viewControllerLayoutGuide type="bottom" id="Q1Z-I5-PpK"/>
@@ -24,6 +24,10 @@
                                     <constraint firstAttribute="width" priority="250" constant="600" id="4MR-JL-Djx"/>
                                     <constraint firstAttribute="height" priority="250" constant="507" id="7bc-GU-Jna"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="8TJ-9z-FxA" id="pjF-bk-Qj1"/>
+                                    <outlet property="delegate" destination="8TJ-9z-FxA" id="RQR-pv-Wed"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -35,6 +39,9 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Favorites" image="star-icon-favorited.png" selectedImage="star-icon-favorited.png" id="SnM-Mt-jr3"/>
+                    <connections>
+                        <outlet property="tableView" destination="QcO-Kz-3jt" id="a8m-y6-qGH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sZd-Jk-WnL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -302,7 +309,7 @@
         <!--Lists-->
         <scene sceneID="RFM-uJ-rmi">
             <objects>
-                <viewController id="1fs-Bp-LMK" customClass="ListsViewController" customModule="ListHero" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ListsViewController" id="1fs-Bp-LMK" customClass="ListsViewController" customModule="ListHero" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NmI-v0-amX"/>
                         <viewControllerLayoutGuide type="bottom" id="MQy-Lb-ceo"/>
@@ -312,23 +319,41 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="9q7-Eh-XVo">
-                                <rect key="frame" x="0.0" y="44" width="600" height="507"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="507"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="250" constant="507" id="Ci4-fz-kjb"/>
                                     <constraint firstAttribute="width" priority="250" constant="600" id="V1J-NJ-MAT"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="1fs-Bp-LMK" id="dEv-KT-rcb"/>
+                                    <outlet property="delegate" destination="1fs-Bp-LMK" id="kI4-M7-3MM"/>
+                                </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.086274512110000007" green="0.270588249" blue="0.55294120309999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="9q7-Eh-XVo" firstAttribute="leading" secondItem="3WJ-wP-vaM" secondAttribute="leadingMargin" constant="-16" id="Sj7-Bw-HMj"/>
-                            <constraint firstItem="MQy-Lb-ceo" firstAttribute="top" secondItem="9q7-Eh-XVo" secondAttribute="bottom" id="lsQ-jI-RA9"/>
+                            <constraint firstItem="9q7-Eh-XVo" firstAttribute="top" secondItem="NmI-v0-amX" secondAttribute="top" id="dWa-2O-Pxg"/>
                             <constraint firstAttribute="trailingMargin" secondItem="9q7-Eh-XVo" secondAttribute="trailing" constant="-16" id="xiH-Bk-J6f"/>
-                            <constraint firstItem="9q7-Eh-XVo" firstAttribute="top" secondItem="NmI-v0-amX" secondAttribute="bottom" id="xo1-YB-RlH"/>
+                            <constraint firstItem="9q7-Eh-XVo" firstAttribute="top" secondItem="NmI-v0-amX" secondAttribute="bottom" constant="-44" id="xo1-YB-RlH"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="dWa-2O-Pxg"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact">
+                            <mask key="constraints">
+                                <include reference="dWa-2O-Pxg"/>
+                                <exclude reference="xo1-YB-RlH"/>
+                            </mask>
+                        </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="Lists" image="pencil-icon-tab.png" selectedImage="pencil-icon-tab.png" id="9k2-Nl-JaA"/>
+                    <connections>
+                        <outlet property="tableView" destination="9q7-Eh-XVo" id="d3l-0x-btt"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wHV-hb-32N" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -386,7 +411,7 @@
         <!--Checklist View Controller-->
         <scene sceneID="ot3-z7-xaQ">
             <objects>
-                <viewController id="8dT-wP-8Pb" customClass="ChecklistViewController" customModule="ListHero" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChecklistViewController" id="8dT-wP-8Pb" customClass="ChecklistViewController" customModule="ListHero" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="V1f-sX-ppj"/>
                         <viewControllerLayoutGuide type="bottom" id="2NM-LO-6ea"/>
@@ -439,6 +464,10 @@
                                 <variation key="heightClass=compact" misplaced="YES">
                                     <rect key="frame" x="0.0" y="84" width="600" height="256"/>
                                 </variation>
+                                <connections>
+                                    <outlet property="dataSource" destination="8dT-wP-8Pb" id="anU-9C-yk9"/>
+                                    <outlet property="delegate" destination="8dT-wP-8Pb" id="F9d-uc-d5g"/>
+                                </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="al1-CG-jSf">
                                 <rect key="frame" x="0.0" y="531" width="600" height="69"/>

@@ -8,36 +8,59 @@
 import UIKit
 import CoreData
 
-class ChecklistViewController: UIViewController {
+class ChecklistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CellActionDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var navItem: UINavigationItem!
-    lazy var currentList = List()
+    weak var listsViewController:ListsViewController!
+    lazy var sortedListItems = NSArray()
     lazy var coreDataManager = CoreDataManager.sharedInstance
-    lazy var syncManager = SyncManager.sharedInstance
-
+    var syncManager:SyncManager!
+    var userDefaults:NSUserDefaults!
+    var currentList:List?
+    
     required init(coder aDecoder: NSCoder)
     {
+        syncManager = SyncManager.sharedInstance
+        userDefaults = NSUserDefaults.standardUserDefaults()
+        
+        if userDefaults.objectForKey("lastListURI") != nil {
+            for list in syncManager.fetchLists() {
+                if list.objectID.URIRepresentation().absoluteString == userDefaults.objectForKey("lastListURI") as? String {
+                    currentList = list as? List
+                }
+            }
+        } else {
+            if let lo:List = syncManager.fetchLists().lastObject as? List {
+                currentList = lo
+            }
+        }
         super.init(coder: aDecoder)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        UserManager.updateUser()
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None;
         self.tableView.backgroundColor = UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.0);
+//        self.tableView.allowsSelection = false
+        
+        var nib = UINib(nibName: "ListTableViewCell", bundle: nil)
+        self.tableView.registerNib(nib, forCellReuseIdentifier: "ListTableViewCell")
+        
+        if let lo:List = self.currentList {
+            self.addNavTitles(lo.name)
+        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        
     }
     
     override func viewDidAppear(animated: Bool) {
-        let userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        
-        if (userDefaults.objectForKey("signupShown") == nil) {
+        if (self.userDefaults.objectForKey("signupShown") == nil) {
             self.showSignUpAlert()
-            userDefaults.setObject(1, forKey: "signupShown")
-            if let user:PFUser = PFUser.currentUser() {
-                userDefaults.setObject("\(user.objectId)", forKey: "currentUser")
-            } else {
-                userDefaults.setObject("anonymous", forKey: "currentUser")
-            }
-            userDefaults.synchronize()
+            self.userDefaults.setObject(1, forKey: "signupShown")
+            self.userDefaults.synchronize()
         }
     }
     
@@ -68,9 +91,11 @@ class ChecklistViewController: UIViewController {
             
             let itemName:String = nameTextField.text
             let notes:String = notesTextField.text
-            self.currentList = self.syncManager.fetchLists().lastObject as List
             
-            self.syncManager.createItem(itemName, list: self.currentList, details: notes)
+            self.syncManager.createItem(itemName, list: self.currentList!, details: notes)
+            
+            //TODO: Remove reloadData code below and add KVO
+            self.tableView.reloadData()
         }))
         self.presentViewController(alertController, animated: false, completion: nil)
     }
@@ -100,6 +125,14 @@ class ChecklistViewController: UIViewController {
             let category:String = categoryTextField.text
 
             self.syncManager.createList(name, category: category)
+            if let lo:List = self.syncManager.fetchLists().lastObject as? List {
+                self.currentList = lo
+            }
+            //TODO: Remove code below and add KVO
+            self.addNavTitles(name)
+            self.tableView.reloadData()
+            self.listsViewController.lists = self.syncManager.fetchLists()
+            self.listsViewController.tableView.reloadData()
         }))
         self.presentViewController(alertController, animated: false, completion: nil)
     }
@@ -108,6 +141,13 @@ class ChecklistViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func addNavTitles(name: String) {
+        self.navigationItem.title = name
+        self.navItem.title = name
+    }
+    
+    // MARK: Trait Collection / Size Delegate Methods
     
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection) {
         var array:NSArray = [self.navItem.rightBarButtonItem!,UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: nil, action:nil)]
@@ -123,5 +163,55 @@ class ChecklistViewController: UIViewController {
         if (size.width > 320.0) {
         }
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    }
+    
+    // MARK: UITableView Datasource Methods
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell:ListTableViewCell = self.tableView.dequeueReusableCellWithIdentifier("ListTableViewCell") as ListTableViewCell
+        cell.delegate = self
+        
+        if let cl:List = self.currentList {
+
+            var items:NSArray = cl.items.allObjects as NSArray
+
+            var sortDescriptor:NSSortDescriptor = NSSortDescriptor(key: "updatedAt", ascending: false)
+            var descriptors:NSArray = NSArray(objects: sortDescriptor)
+            self.sortedListItems = items.sortedArrayUsingDescriptors(descriptors)
+            
+            var object:ListItem = self.sortedListItems.objectAtIndex(indexPath.row) as ListItem
+            cell.item = object
+            cell.itemName.text = object.name
+            cell.setupCell()
+        }
+        
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var count:Int = 0
+        
+        if let cl:List = self.currentList {
+            count = cl.items.count
+        }
+        return count
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    // MARK: UITableView Delegate Methods
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
+    
+    // MARK: UITableView Delegate Methods
+    func cellFavoriteChanged(cell: ListTableViewCell) {
+        println("\(cell.item?.isFavorited)")
+    }
+    
+    func cellCompleteChanged(cell: ListTableViewCell) {
+        println("\(cell.item?.isComplete)")
     }
 }

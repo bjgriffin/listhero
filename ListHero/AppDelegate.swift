@@ -14,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             
     var window: UIWindow?
     let storyboard : UIStoryboard = UIStoryboard(name: "MainStoryboard", bundle: nil);
+    let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var containerViewController : ContainerViewController?
     var syncManager = SyncManager.sharedInstance
     
@@ -21,11 +22,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.setApplicationId("C5ajjGiFo0SamAC4bin6DHiSO9SQdpove7llmmgg", clientKey: "mo8Su2bCJcvuc1r2sAJ70mqKQormqS2jctfjD2ZI");
         
         //Save currentUser to either anonymous or current user
-//        let userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-//        userDefaults.setObject((PFUser.currentUser() != nil ? PFUser.currentUser().objectId : "anonymous"), forKey: "currentUser")
-//        
+        UserManager.updateUser()
+        
 //        self.syncManager.sync()
-//        
+        
         self.containerViewController = self.window!.rootViewController as? ContainerViewController
         return true
     }
@@ -36,8 +36,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        if let list:List = self.containerViewController!.mainSplitViewController.checklistViewController.currentList {
+            self.defaults.setObject(list.objectID.URIRepresentation().absoluteString, forKey: "lastListURI")
+            self.defaults.synchronize()
+        }
     }
 
     func applicationWillEnterForeground(application: UIApplication) {

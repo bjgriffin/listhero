@@ -19,8 +19,4 @@ class ListItem: NSManagedObject {
     @NSManaged var syncStatus: String
     @NSManaged var updatedAt: NSDate
     @NSManaged var lists: NSSet
-
-    func mutableLists() -> NSMutableSet {
-        return self.mutableSetValueForKey("lists")
-    }
 }

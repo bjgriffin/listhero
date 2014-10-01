@@ -21,8 +21,4 @@ class List: NSManagedObject {
     @NSManaged var updatedAt: NSDate
     @NSManaged var user: String
     @NSManaged var items: NSSet
-
-    func mutableItems() -> NSMutableSet {
-        return self.mutableSetValueForKey("items")
-    }
 }

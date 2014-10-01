@@ -43,9 +43,10 @@ class SyncManager: NSObject {
             
             //fetch and filter COREDATA results
             var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: entity)
-            let userPredicate:NSPredicate = NSPredicate(format: "currentUser = %@", self.userDefaults.objectForKey("currentUser") as String)
-            fetchRequest.predicate = userPredicate
-            
+            if entity == kEntityName.entityList.toRaw() {
+                let userPredicate:NSPredicate = NSPredicate(format: "user = %@", self.userDefaults.objectForKey("currentUser") as String)
+                fetchRequest.predicate = userPredicate
+            }
             var cdResults:NSArray = NSArray()
             self.coreDataManager.masterManagedObjectContext!.performBlockAndWait({
                 cdResults = self.coreDataManager.masterManagedObjectContext!.executeFetchRequest(fetchRequest, error: nil)!
@@ -157,14 +158,14 @@ class SyncManager: NSObject {
     
     func fetchLists() -> NSArray {
         var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: kEntityName.entityList.toRaw())
-        let userPredicate:NSPredicate = NSPredicate(format: "currentUser = %@", self.userDefaults.objectForKey("currentUser") as String)
+        let userPredicate:NSPredicate = NSPredicate(format: "user = %@", self.userDefaults.objectForKey("currentUser") as String)
         fetchRequest.predicate = userPredicate
         
-        var cdResults:NSArray = NSArray()
+        var cdResults:NSArray? = NSArray()
         self.coreDataManager.masterManagedObjectContext!.performBlockAndWait({
             cdResults = self.coreDataManager.masterManagedObjectContext!.executeFetchRequest(fetchRequest, error: nil)!
         })
-        return cdResults
+        return cdResults!
     }
     
     func createItem(name:String, list:List, details:String) {

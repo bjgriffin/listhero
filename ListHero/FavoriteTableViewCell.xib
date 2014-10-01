@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="V8h-zW-EPT" customClass="FavoriteTableViewCell" customModule="ListHero" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="V8h-zW-EPT" id="ZNe-bi-oFu">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="67k-uj-NvY">
+                        <rect key="frame" x="6" y="5" width="34" height="34"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="34" id="1cI-ft-yyq"/>
+                            <constraint firstAttribute="height" constant="34" id="AUy-Wa-J2k"/>
+                        </constraints>
+                        <state key="normal" image="ios7-plus-icon-normal.png">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o0C-On-SkQ">
+                        <rect key="frame" x="55" y="12" width="210" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" priority="250" constant="21" id="JqB-C7-uet"/>
+                            <constraint firstAttribute="width" priority="250" constant="210" id="OEU-6M-cx8"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star-icon-unfavorited.png" translatesAutoresizingMaskIntoConstraints="NO" id="ELn-sA-ZLt">
+                        <rect key="frame" x="278" y="5" width="34" height="34"/>
+                        <constraints>
+                            <constraint firstAttribute="width" priority="250" constant="34" id="fBy-r5-dYT"/>
+                            <constraint firstAttribute="height" priority="250" constant="34" id="jTC-1z-Vxg"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="o0C-On-SkQ" firstAttribute="top" secondItem="ZNe-bi-oFu" secondAttribute="topMargin" constant="4" id="Gbb-Ev-Klk"/>
+                    <constraint firstItem="o0C-On-SkQ" firstAttribute="leading" secondItem="67k-uj-NvY" secondAttribute="trailing" constant="15" id="Qvi-d0-Qpv"/>
+                    <constraint firstItem="ELn-sA-ZLt" firstAttribute="top" secondItem="ZNe-bi-oFu" secondAttribute="topMargin" constant="-3" id="iQl-Pj-zNa"/>
+                    <constraint firstItem="67k-uj-NvY" firstAttribute="leading" secondItem="ZNe-bi-oFu" secondAttribute="leadingMargin" constant="-2" id="lYu-58-LiW"/>
+                    <constraint firstItem="67k-uj-NvY" firstAttribute="top" secondItem="ZNe-bi-oFu" secondAttribute="topMargin" constant="-3" id="oLq-LC-td8"/>
+                    <constraint firstItem="ELn-sA-ZLt" firstAttribute="leading" secondItem="o0C-On-SkQ" secondAttribute="trailing" constant="13" id="rfR-8c-2dW"/>
+                    <constraint firstItem="ELn-sA-ZLt" firstAttribute="leading" secondItem="ZNe-bi-oFu" secondAttribute="leadingMargin" constant="270" id="uT0-FF-uKv"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="favoriteImageView" destination="ELn-sA-ZLt" id="APM-Zd-GiM"/>
+                <outlet property="itemName" destination="o0C-On-SkQ" id="UgJ-Pv-8zx"/>
+                <outlet property="plusButton" destination="67k-uj-NvY" id="ZKX-uX-mDu"/>
+            </connections>
+            <point key="canvasLocation" x="281" y="206"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ios7-plus-icon-normal.png" width="76" height="76"/>
+        <image name="star-icon-unfavorited.png" width="34" height="34"/>
+    </resources>
+</document>

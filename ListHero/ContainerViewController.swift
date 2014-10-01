@@ -10,12 +10,10 @@ import UIKit
 
 class ContainerViewController: UIViewController, UISplitViewControllerDelegate {
     var mainSplitViewController : MainSplitViewController
-    var forcedTraitCollection : UITraitCollection
-    
+    var delegate = UIApplication.sharedApplication().delegate as AppDelegate
+
     required init(coder aDecoder: NSCoder) {
-        var delegate = UIApplication.sharedApplication().delegate as AppDelegate
-        self.mainSplitViewController = delegate.storyboard.instantiateViewControllerWithIdentifier("MainSplitViewController") as MainSplitViewController
-        self.forcedTraitCollection = UITraitCollection(horizontalSizeClass: UIUserInterfaceSizeClass.Regular)
+        self.mainSplitViewController = self.delegate.storyboard.instantiateViewControllerWithIdentifier("MainSplitViewController") as MainSplitViewController
         
         super.init(coder: aDecoder)
     }
@@ -38,8 +36,4 @@ class ContainerViewController: UIViewController, UISplitViewControllerDelegate {
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
     }
-    
-//    func splitViewController(svc: UISplitViewController!, shouldHideViewController vc: UIViewController!, inOrientation orientation: UIInterfaceOrientation) -> Bool {
-//        return false;
-//    }
 }

@@ -42,6 +42,7 @@ class UserManager: NSObject {
                     userDefaults.setValue(user.objectId, forKey: "currentUser")
                     NSNotificationCenter.defaultCenter().postNotificationName("signedIn", object: nil)
                 }
+                userDefaults.synchronize()
             }
         }))
         
@@ -66,6 +67,7 @@ class UserManager: NSObject {
                     userDefaults.setValue(user.objectId, forKey: "currentUser")
                     NSNotificationCenter.defaultCenter().postNotificationName("signedIn", object: nil)
                 }
+                userDefaults.synchronize()
             }
         }))
         
@@ -75,6 +77,16 @@ class UserManager: NSObject {
         }))
         
         return alertController
+    }
+    
+    class func updateUser() {
+        let userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        if let user:PFUser = PFUser.currentUser() {
+            userDefaults.setObject("\(user.objectId)", forKey: "currentUser")
+        } else {
+            userDefaults.setObject("anonymous", forKey: "currentUser")
+        }
+        userDefaults.synchronize()
     }
     
 //    class func setCurrentProfileUserDefaults(user:User) {
