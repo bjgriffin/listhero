@@ -8,10 +8,16 @@
 
 import UIKit
 
+protocol DrawerCellActionDelegate {
+    func penButtonSelected(cell: DrawerTableViewCell)
+}
+
 class DrawerTableViewCell: UITableViewCell {
     @IBOutlet weak var listName: UILabel!
     @IBOutlet weak var penButton: UIButton!
-
+    var delegate:DrawerCellActionDelegate?
+    var list:List?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -23,4 +29,7 @@ class DrawerTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+    @IBAction func penEditAction(sender: AnyObject) {
+        self.delegate?.penButtonSelected(self)
+    }
 }

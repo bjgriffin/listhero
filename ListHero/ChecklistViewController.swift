@@ -42,7 +42,7 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
         UserManager.updateUser()
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None;
         self.tableView.backgroundColor = UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.0);
-//        self.tableView.allowsSelection = false
+        self.tableView.allowsSelection = false
         
         var nib = UINib(nibName: "ListTableViewCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "ListTableViewCell")
@@ -53,7 +53,7 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     override func viewWillAppear(animated: Bool) {
-        
+
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -66,6 +66,38 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func showSignUpAlert() {
         self.presentViewController(UserManager.showLoginAlertController(), animated: true, completion: nil)
+    }
+    
+    func deleteItemsAction() {
+        var array:NSArray? = self.currentList?.items.allObjects as NSArray?
+        
+        var alertController:UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        
+        alertController.addAction(UIAlertAction(title: "Delete Completed Items?", style: UIAlertActionStyle.Default, handler: {
+            alertAction in
+            var filteredArray:NSArray? = array?.filteredArrayUsingPredicate(NSPredicate(format: "isComplete == %@", true))
+            
+            for object:AnyObject in filteredArray! {
+                self.coreDataManager.masterManagedObjectContext?.deleteObject(object as NSManagedObject)
+            }
+            self.coreDataManager.saveMasterContext()
+            self.tableView.reloadData()
+        }))
+        alertController.addAction(UIAlertAction(title: "Delete All Items?", style: UIAlertActionStyle.Default, handler: {
+            alertAction in
+            for object:AnyObject in array! {
+                self.coreDataManager.masterManagedObjectContext?.deleteObject(object as NSManagedObject)
+            }
+            self.coreDataManager.saveMasterContext()
+            self.tableView.reloadData()
+        }))
+        
+        alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: {
+            alertAction in
+            alertController.dismissViewControllerAnimated(true, completion: nil)
+        }))
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     @IBAction func addItemAction(sender: AnyObject) {
@@ -150,7 +182,7 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     // MARK: Trait Collection / Size Delegate Methods
     
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection) {
-        var array:NSArray = [self.navItem.rightBarButtonItem!,UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: nil, action:nil)]
+        var array:NSArray = [self.navItem.rightBarButtonItem!,UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action:Selector("deleteItemsAction"))]
         
         if self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Compact {
             self.navigationItem.setRightBarButtonItems(array, animated: false)

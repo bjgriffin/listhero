@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, DrawerCellActionDelegate {
     @IBOutlet weak var tableView: UITableView!
     lazy var userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
     lazy var sortedListItems = NSArray()
@@ -58,6 +58,7 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:DrawerTableViewCell = self.tableView.dequeueReusableCellWithIdentifier("DrawerTableViewCell") as DrawerTableViewCell
+        cell.delegate = self
         
         if let lsts:NSArray = lists {
             
@@ -72,7 +73,7 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             
             cell.listName.text = list.name
-
+            cell.list = list
         }
         
         return cell
@@ -101,6 +102,31 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Compact {
             self.navigationController?.pushViewController(self.checklistViewController, animated: true)
         }
+    }
+    
+    // MARK: DrawerCellActionDelegate Methods
+    
+    func penButtonSelected(cell: DrawerTableViewCell) {
+        var alertController:UIAlertController = UIAlertController(title: "\(cell.listName.text!)", message: "Would you like to change \(cell.listName.text!)'s title?", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alertController.addTextFieldWithConfigurationHandler({
+            textField in
+            textField.placeholder = "new list title"
+        })
+        alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: {
+            alertAction in
+            alertController.dismissViewControllerAnimated(true, completion: nil)
+        }))
+        alertController.addAction(UIAlertAction(title: "Change", style: UIAlertActionStyle.Default, handler: {
+            alertAction in
+            let textFields:NSArray = alertController.textFields!
+            let nameTextField:UITextField = textFields.objectAtIndex(0) as UITextField
+            cell.list?.name = nameTextField.text
+            self.syncManager.coreDataManager.saveMasterContext()
+            self.tableView.reloadData()
+            alertController.dismissViewControllerAnimated(true, completion: nil)
+        }))
+        self.presentViewController(alertController, animated: false, completion: nil)
     }
 
 }

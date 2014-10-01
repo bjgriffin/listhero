@@ -32,6 +32,9 @@
                         <state key="normal" image="edit-pen-icon.png">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <connections>
+                            <action selector="penEditAction:" destination="jbq-VD-Ypy" eventType="touchUpInside" id="P9a-Q0-OnV"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>
