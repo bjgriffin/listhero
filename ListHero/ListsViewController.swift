@@ -14,7 +14,7 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     lazy var sortedListItems = NSArray()
     weak var checklistViewController:ChecklistViewController!
     var syncManager:SyncManager!
-    var lists:NSArray?
+    var lists:NSMutableArray?
     
     required init(coder aDecoder: NSCoder) {
         syncManager = SyncManager.sharedInstance
@@ -30,6 +30,7 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         var nib = UINib(nibName: "DrawerTableViewCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "DrawerTableViewCell")
         
+        self.tabBarItem.selectedImage = UIImage(named:"pencil-icon-tab.png")
     }
 
     override func didReceiveMemoryWarning() {
@@ -68,7 +69,7 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             
             var list:List = self.sortedListItems.objectAtIndex(indexPath.row) as List
             
-            if list.objectID.URIRepresentation().absoluteString == self.checklistViewController.currentList!.objectID.URIRepresentation().absoluteString {
+            if list.objectID.URIRepresentation().absoluteString == self.checklistViewController.currentList?.objectID.URIRepresentation().absoluteString {
                 self.tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)
             }
             

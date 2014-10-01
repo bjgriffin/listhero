@@ -156,7 +156,7 @@ class SyncManager: NSObject {
         self.sync()
     }
     
-    func fetchLists() -> NSArray {
+    func fetchLists() -> NSMutableArray {
         var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: kEntityName.entityList.toRaw())
         let userPredicate:NSPredicate = NSPredicate(format: "user = %@", self.userDefaults.objectForKey("currentUser") as String)
         fetchRequest.predicate = userPredicate
@@ -165,7 +165,7 @@ class SyncManager: NSObject {
         self.coreDataManager.masterManagedObjectContext!.performBlockAndWait({
             cdResults = self.coreDataManager.masterManagedObjectContext!.executeFetchRequest(fetchRequest, error: nil)!
         })
-        return cdResults!
+        return cdResults!.mutableCopy() as NSMutableArray
     }
     
     func createItem(name:String, list:List, details:String) {

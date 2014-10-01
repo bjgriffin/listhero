@@ -30,6 +30,8 @@ class FavoritesViewController: UIViewController {
         var items:NSArray? = self.checklistViewController.currentList?.items.allObjects
         self.favoriteItems = items?.filteredArrayUsingPredicate(NSPredicate(format: "isFavorited == %@", true))
         
+        self.tabBarItem.selectedImage = UIImage(named:"star-icon-favorited.png")
+        
         super.viewDidLoad()
     }
 

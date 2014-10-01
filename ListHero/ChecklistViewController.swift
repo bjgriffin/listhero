@@ -92,6 +92,17 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
             self.tableView.reloadData()
         }))
         
+        alertController.addAction(UIAlertAction(title: "Delete \(self.currentList!.name)?", style: UIAlertActionStyle.Default, handler: {
+            alertAction in
+            self.coreDataManager.masterManagedObjectContext?.deleteObject(self.currentList! as NSManagedObject)
+            self.listsViewController.lists?.removeObject(self.currentList!)
+            self.coreDataManager.saveMasterContext()
+            self.currentList = self.syncManager.fetchLists().lastObject? as? List
+            self.addNavTitles(self.currentList!.name)
+            self.listsViewController.tableView.reloadData()
+            self.tableView.reloadData()
+        }))
+        
         alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: {
             alertAction in
             alertController.dismissViewControllerAnimated(true, completion: nil)
