@@ -11,12 +11,16 @@ import UIKit
 class FavoritesViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     lazy var syncManager = SyncManager.sharedInstance
-    lazy var sortedFavoriteItems = NSArray()
-    var favoriteItems:NSArray?
-    weak var checklistViewController:ChecklistViewController!
+    lazy var sortedFavoriteItems = Array<ListItem>()
+    var favoriteItems:Array<ListItem>!
+    weak var checklistViewController : ChecklistViewController!
     
     required init(coder aDecoder: NSCoder)
     {
+        checklistViewController = UIStoryboard.checklistViewController()
+        var items = self.checklistViewController.currentList?.items.allObjects as? Array<ListItem>
+        favoriteItems = items?.filter({m in m.isFavorited == true})
+        
         super.init(coder: aDecoder)
     }
     
@@ -26,9 +30,6 @@ class FavoritesViewController: UIViewController {
         
         var nib = UINib(nibName: "ListTableViewCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "ListTableViewCell")
-        
-        var items:NSArray? = self.checklistViewController.currentList?.items.allObjects
-        self.favoriteItems = items?.filteredArrayUsingPredicate(NSPredicate(format: "isFavorited == %@", true))
         
         self.tabBarItem.selectedImage = UIImage(named:"star-icon-favorited.png")
         
@@ -44,14 +45,11 @@ class FavoritesViewController: UIViewController {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:FavoriteTableViewCell = self.tableView.dequeueReusableCellWithIdentifier("FavoriteTableViewCell") as FavoriteTableViewCell
-        
-            var sortDescriptor:NSSortDescriptor = NSSortDescriptor(key: "updatedAt", ascending: false)
-            var descriptors:NSArray = NSArray(objects: sortDescriptor)
-            self.sortedFavoriteItems = self.favoriteItems!.sortedArrayUsingDescriptors(descriptors)
+        sortedFavoriteItems = favoriteItems.sorted({ $0.updatedAt.compare($1.updatedAt) == NSComparisonResult.OrderedAscending })
             
-            var item:ListItem = self.sortedFavoriteItems.objectAtIndex(indexPath.row) as ListItem
+            var item:ListItem = self.sortedFavoriteItems[indexPath.row] as ListItem
             
-            if item.objectID.URIRepresentation().absoluteString == self.checklistViewController.currentList!.objectID.URIRepresentation().absoluteString {
+            if item.objectID.URIRepresentation().absoluteString == self.checklistViewController.currentList?.objectID.URIRepresentation().absoluteString {
                 self.tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)
             }
             

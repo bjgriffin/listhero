@@ -29,7 +29,7 @@ class SyncManager: NSObject {
     }
     
     func sync() {
-        let entities:NSArray = NSArray(objects: kEntityName.entityList.toRaw(), kEntityName.entityItem.toRaw())
+        let entities:NSArray = NSArray(objects: kEntityName.entityList.rawValue, kEntityName.entityItem.rawValue)
         for entity in entities {
             self.pullDataForEntity(entity as String)
         }
@@ -43,8 +43,8 @@ class SyncManager: NSObject {
             
             //fetch and filter COREDATA results
             var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: entity)
-            if entity == kEntityName.entityList.toRaw() {
-                let userPredicate:NSPredicate = NSPredicate(format: "user = %@", self.userDefaults.objectForKey("currentUser") as String)
+            if entity == kEntityName.entityList.rawValue {
+                let userPredicate:NSPredicate = NSPredicate(format: "user = %@", self.userDefaults.objectForKey("currentUser") as String)!
                 fetchRequest.predicate = userPredicate
             }
             var cdResults:NSArray = NSArray()
@@ -56,10 +56,10 @@ class SyncManager: NSObject {
                 var index:Int = self.getIndexOfCoreDataObjectFromServer(result as NSManagedObject, serverResults: objects)
                 if  index == NSNotFound {
                     //Can't Find CDObject on server : Either DELETED from server or CREATED in core data
-                    if result.valueForKey("syncStatus") as NSString == kObjectSync.kObjectCreated.toRaw() {
+                    if result.valueForKey("syncStatus") as NSString == kObjectSync.kObjectCreated.rawValue {
                         //create object on server
                         self.createPFObject(entity, cdObject: result as NSManagedObject)
-                        result.setValue(kObjectSync.kObjectUpdated.toRaw(), forKey: "syncStatus")
+                        result.setValue(kObjectSync.kObjectUpdated.rawValue, forKey: "syncStatus")
                     } else {
                         self.coreDataManager.masterManagedObjectContext?.deleteObject(result as NSManagedObject)
                     }
@@ -69,7 +69,7 @@ class SyncManager: NSObject {
                         //deleted - delete object from CD
                         //updated - replace values from CD
                         //synced - replace values from CD
-                        if result.valueForKey("syncStatus") as NSString == kObjectSync.kObjectDeleted.toRaw() {
+                        if result.valueForKey("syncStatus") as NSString == kObjectSync.kObjectDeleted.rawValue {
                             self.coreDataManager.masterManagedObjectContext?.deleteObject(result as NSManagedObject)
                         } else {
                             self.updateCoreDataObject(entity, pfObject: pfObject, cdObject: result as NSManagedObject)
@@ -78,7 +78,7 @@ class SyncManager: NSObject {
                         //deleted - delete object from Server
                         //updated - replace values from Server
                         //synced - replace values from Server
-                        if result.valueForKey("syncStatus") as NSString == kObjectSync.kObjectDeleted.toRaw() {
+                        if result.valueForKey("syncStatus") as NSString == kObjectSync.kObjectDeleted.rawValue {
                             pfObject.deleteInBackground()
                             self.coreDataManager.masterManagedObjectContext?.deleteObject(result as NSManagedObject)
                         } else {
@@ -108,7 +108,7 @@ class SyncManager: NSObject {
         pfObject["objectUri"] = cdObject.objectID.URIRepresentation().absoluteString!
         pfObject["isComplete"] = cdObject.valueForKey("isComplete")
         
-        if entity == kEntityName.entityList.toRaw() {
+        if entity == kEntityName.entityList.rawValue {
             pfObject["user"] = cdObject.valueForKey("user")
             pfObject["category"] = cdObject.valueForKey("category")
             pfObject["items"] = cdObject.valueForKey("items")
@@ -130,9 +130,9 @@ class SyncManager: NSObject {
         cdObject.setValue(pfObject["name"], forKey: "name")
         cdObject.setValue(self.formatNSDateToMatchParse(), forKey: "updatedAt")
         cdObject.setValue(pfObject["isComplete"], forKey: "isComplete")
-        cdObject.setValue(pfObject["\(kObjectSync.kObjectSynced.toRaw())"], forKey: "syncStatus")
+        cdObject.setValue(pfObject["\(kObjectSync.kObjectSynced.rawValue)"], forKey: "syncStatus")
         
-        if entity == kEntityName.entityList.toRaw() {
+        if entity == kEntityName.entityList.rawValue {
             cdObject.setValue(pfObject["user"], forKey: "user")
             cdObject.setValue(pfObject["category"], forKey: "category")
             cdObject.setValue(pfObject["items"], forKey: "items")
@@ -145,7 +145,7 @@ class SyncManager: NSObject {
     }
     
     func createList(name:String, category:String) {
-        let list:List = NSEntityDescription.insertNewObjectForEntityForName(kEntityName.entityList.toRaw(), inManagedObjectContext: self.coreDataManager.masterManagedObjectContext!) as List
+        let list:List = NSEntityDescription.insertNewObjectForEntityForName(kEntityName.entityList.rawValue, inManagedObjectContext: self.coreDataManager.masterManagedObjectContext!) as List
         
         list.user = PFUser.currentUser() != nil ? PFUser.currentUser().objectId : "anonymous"
         list.name = name
@@ -157,8 +157,8 @@ class SyncManager: NSObject {
     }
     
     func fetchLists() -> NSMutableArray {
-        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: kEntityName.entityList.toRaw())
-        let userPredicate:NSPredicate = NSPredicate(format: "user = %@", self.userDefaults.objectForKey("currentUser") as String)
+        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: kEntityName.entityList.rawValue)
+        let userPredicate:NSPredicate = NSPredicate(format: "user = %@", self.userDefaults.objectForKey("currentUser") as String)!
         fetchRequest.predicate = userPredicate
         
         var cdResults:NSArray? = NSArray()
@@ -169,7 +169,7 @@ class SyncManager: NSObject {
     }
     
     func createItem(name:String, list:List, details:String) {
-        let item:ListItem = NSEntityDescription.insertNewObjectForEntityForName(kEntityName.entityItem.toRaw(), inManagedObjectContext: self.coreDataManager.masterManagedObjectContext!) as ListItem
+        let item:ListItem = NSEntityDescription.insertNewObjectForEntityForName(kEntityName.entityItem.rawValue, inManagedObjectContext: self.coreDataManager.masterManagedObjectContext!) as ListItem
         
         item.name = name
         item.details = details
@@ -203,7 +203,7 @@ class SyncManager: NSObject {
     }
     
     func formatNSDateToMatchParse() -> NSDate {
-        var now = NSDate.date()
+        var now = NSDate()
         var calendar = NSCalendar.currentCalendar()
         var components = calendar.components((NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitSecond), fromDate: now)
         components.hour = 0
@@ -214,7 +214,7 @@ class SyncManager: NSObject {
         var formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         var strFromDate = formatter.stringFromDate(morningStart!)
-        now = formatter.dateFromString(strFromDate)
+        now = formatter.dateFromString(strFromDate)!
         
         return now
     }

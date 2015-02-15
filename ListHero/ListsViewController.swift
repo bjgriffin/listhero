@@ -12,13 +12,14 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var tableView: UITableView!
     lazy var userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
     lazy var sortedListItems = NSArray()
-    weak var checklistViewController:ChecklistViewController!
+    weak var checklistViewController : ChecklistViewController!
     var syncManager:SyncManager!
     var lists:NSMutableArray?
     
     required init(coder aDecoder: NSCoder) {
         syncManager = SyncManager.sharedInstance
         lists = syncManager.fetchLists()
+        checklistViewController = UIStoryboard.checklistViewController()
         super.init(coder: aDecoder)
     }
     
@@ -42,17 +43,6 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func styleTableView() {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None;
         self.tableView.backgroundColor = UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.0);
-    }
-    
-    // MARK: Trait Collection / Size Delegate Methods
-    
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection) {
-
-    }
-    
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
     }
     
     // MARK: UITableView Datasource Methods

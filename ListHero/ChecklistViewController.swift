@@ -11,7 +11,7 @@ import CoreData
 class ChecklistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CellActionDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var navItem: UINavigationItem!
-    weak var listsViewController:ListsViewController!
+    weak var listsViewController : ListsViewController!
     lazy var sortedListItems = NSArray()
     lazy var coreDataManager = CoreDataManager.sharedInstance
     var syncManager:SyncManager!
@@ -22,6 +22,7 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     {
         syncManager = SyncManager.sharedInstance
         userDefaults = NSUserDefaults.standardUserDefaults()
+        listsViewController = UIStoryboard.listsViewController()
         
         if userDefaults.objectForKey("lastListURI") != nil {
             for list in syncManager.fetchLists() {
@@ -75,7 +76,7 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
         
         alertController.addAction(UIAlertAction(title: "Delete Completed Items?", style: UIAlertActionStyle.Default, handler: {
             alertAction in
-            var filteredArray:NSArray? = array?.filteredArrayUsingPredicate(NSPredicate(format: "isComplete == %@", true))
+            var filteredArray:NSArray? = array?.filteredArrayUsingPredicate(NSPredicate(format: "isComplete == %@", true)!)
             
             for object:AnyObject in filteredArray! {
                 self.coreDataManager.masterManagedObjectContext?.deleteObject(object as NSManagedObject)
@@ -95,11 +96,11 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
         alertController.addAction(UIAlertAction(title: "Delete \(self.currentList!.name)?", style: UIAlertActionStyle.Default, handler: {
             alertAction in
             self.coreDataManager.masterManagedObjectContext?.deleteObject(self.currentList! as NSManagedObject)
-            self.listsViewController.lists?.removeObject(self.currentList!)
+            self.listsViewController?.lists?.removeObject(self.currentList!)
             self.coreDataManager.saveMasterContext()
             self.currentList = self.syncManager.fetchLists().lastObject? as? List
             self.addNavTitles(self.currentList!.name)
-            self.listsViewController.tableView.reloadData()
+            self.listsViewController?.tableView.reloadData()
             self.tableView.reloadData()
         }))
         
@@ -174,8 +175,8 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
             //TODO: Remove code below and add KVO
             self.addNavTitles(name)
             self.tableView.reloadData()
-            self.listsViewController.lists = self.syncManager.fetchLists()
-            self.listsViewController.tableView.reloadData()
+            self.listsViewController?.lists = self.syncManager.fetchLists()
+            self.listsViewController?.tableView.reloadData()
         }))
         self.presentViewController(alertController, animated: false, completion: nil)
     }
@@ -192,7 +193,7 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     
     // MARK: Trait Collection / Size Delegate Methods
     
-    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection) {
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         var array:NSArray = [self.navItem.rightBarButtonItem!,UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action:Selector("deleteItemsAction"))]
         
         if self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Compact {

@@ -13,9 +13,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
                             
     var window: UIWindow?
-    let storyboard : UIStoryboard = UIStoryboard(name: "MainStoryboard", bundle: nil);
     let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-    var containerViewController : ContainerViewController?
     var syncManager = SyncManager.sharedInstance
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: NSDictionary?) -> Bool {
@@ -25,8 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserManager.updateUser()
         
 //        self.syncManager.sync()
-        
-        self.containerViewController = self.window!.rootViewController as? ContainerViewController
         return true
     }
 
@@ -36,10 +32,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
-        if let list:List = self.containerViewController!.mainSplitViewController.checklistViewController.currentList {
-            self.defaults.setObject(list.objectID.URIRepresentation().absoluteString, forKey: "lastListURI")
-            self.defaults.synchronize()
-        }
+
+//        if let list:List = self.containerViewController!.mainSplitViewController.checklistViewController.currentList {
+//            self.defaults.setObject(list.objectID.URIRepresentation().absoluteString, forKey: "lastListURI")
+//            self.defaults.synchronize()
+//        }
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
