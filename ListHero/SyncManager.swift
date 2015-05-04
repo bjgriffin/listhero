@@ -19,6 +19,7 @@ enum kEntityName: String {
 
 class SyncManager: NSObject {
     var coreDataManager = CoreDataManager.sharedInstance
+    var lists : Array<List>?
     let userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
 
     class var sharedInstance : SyncManager {
@@ -28,124 +29,29 @@ class SyncManager: NSObject {
         return Static.instance
     }
     
-    func sync() {
-        let entities:NSArray = NSArray(objects: kEntityName.entityList.rawValue, kEntityName.entityItem.rawValue)
-        for entity in entities {
-            self.pullDataForEntity(entity as String)
-        }
+    func updateDataManagerProperties() {
+//        fetchUpdatedLists()
     }
     
-    func pullDataForEntity(entity:String) {
-        var query = PFQuery(className:entity)
-        query.whereKey("user", equalTo:self.userDefaults.objectForKey("currentUser"))
-        query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]!, error: NSError!) -> Void in
-            
-            //fetch and filter COREDATA results
-            var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: entity)
-            if entity == kEntityName.entityList.rawValue {
-                let userPredicate:NSPredicate = NSPredicate(format: "user = %@", self.userDefaults.objectForKey("currentUser") as String)!
-                fetchRequest.predicate = userPredicate
-            }
-            var cdResults:NSArray = NSArray()
-            self.coreDataManager.masterManagedObjectContext!.performBlockAndWait({
-                cdResults = self.coreDataManager.masterManagedObjectContext!.executeFetchRequest(fetchRequest, error: nil)!
-            })
-            
-            for result in cdResults {
-                var index:Int = self.getIndexOfCoreDataObjectFromServer(result as NSManagedObject, serverResults: objects)
-                if  index == NSNotFound {
-                    //Can't Find CDObject on server : Either DELETED from server or CREATED in core data
-                    if result.valueForKey("syncStatus") as NSString == kObjectSync.kObjectCreated.rawValue {
-                        //create object on server
-                        self.createPFObject(entity, cdObject: result as NSManagedObject)
-                        result.setValue(kObjectSync.kObjectUpdated.rawValue, forKey: "syncStatus")
-                    } else {
-                        self.coreDataManager.masterManagedObjectContext?.deleteObject(result as NSManagedObject)
-                    }
-                } else {
-                    var pfObject:PFObject = (objects as NSArray).objectAtIndex(index) as PFObject
-                    if  (pfObject["updatedAt"] as NSDate).compare((result.objectForKey("updatedAt") as NSDate)) == NSComparisonResult.OrderedDescending {
-                        //deleted - delete object from CD
-                        //updated - replace values from CD
-                        //synced - replace values from CD
-                        if result.valueForKey("syncStatus") as NSString == kObjectSync.kObjectDeleted.rawValue {
-                            self.coreDataManager.masterManagedObjectContext?.deleteObject(result as NSManagedObject)
-                        } else {
-                            self.updateCoreDataObject(entity, pfObject: pfObject, cdObject: result as NSManagedObject)
-                        }
-                    } else {
-                        //deleted - delete object from Server
-                        //updated - replace values from Server
-                        //synced - replace values from Server
-                        if result.valueForKey("syncStatus") as NSString == kObjectSync.kObjectDeleted.rawValue {
-                            pfObject.deleteInBackground()
-                            self.coreDataManager.masterManagedObjectContext?.deleteObject(result as NSManagedObject)
-                        } else {
-                            self.updatePFObject(entity, pfObject: pfObject, cdObject: result as NSManagedObject)
-                        }
-                    }
-                }
-                self.coreDataManager.saveMasterContext()
-            }
-            
-            for object in objects {
-                var index:Int = self.getIndexOfServerObjectFromCoreData(object as PFObject, coreDataResults: cdResults)
-                if  index == NSNotFound {
-                    self.createCoreDataObject(entity, pfObject: object)
-                }
-            }
-        }
-    }
+    //MARK: Fetch Methods Core Data
     
-    func createPFObject(entity:String, cdObject:NSManagedObject) {
-        var pfCreateObject:PFObject = PFObject(className:entity)
-        updatePFObject(entity, pfObject: pfCreateObject, cdObject: cdObject)
-    }
+//    func fetchUpdatedLists() {
+//        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: kEntityName.entityList.rawValue)
+//        let userPredicate:NSPredicate = NSPredicate(format: "user = %@", self.userDefaults.objectForKey("currentUser") as! String)
+//        fetchRequest.predicate = userPredicate
+//        
+//        var cdResults = Array<List>()
+//        self.coreDataManager.masterManagedObjectContext.performBlockAndWait({
+//            cdResults = self.coreDataManager.masterManagedObjectContext!.executeFetchRequest(fetchRequest, error: nil)
+//        })
+//        lists = cdResults
+//    }
     
-    func updatePFObject(entity:String, pfObject:PFObject, cdObject:NSManagedObject) {
-        pfObject["name"] = cdObject.valueForKey("name")
-        pfObject["objectUri"] = cdObject.objectID.URIRepresentation().absoluteString!
-        pfObject["isComplete"] = cdObject.valueForKey("isComplete")
-        
-        if entity == kEntityName.entityList.rawValue {
-            pfObject["user"] = cdObject.valueForKey("user")
-            pfObject["category"] = cdObject.valueForKey("category")
-            pfObject["items"] = cdObject.valueForKey("items")
-        } else {
-            pfObject["isFavorited"] = cdObject.valueForKey("isFavorited")
-            pfObject["details"] = cdObject.valueForKey("details")
-        }
-        
-        pfObject.saveInBackground()
-    }
-    
-    func createCoreDataObject(entity:String, pfObject:AnyObject) {
-        var cdCreateObject:NSManagedObject = NSEntityDescription.insertNewObjectForEntityForName(entity, inManagedObjectContext: self.coreDataManager.masterManagedObjectContext!) as NSManagedObject
-        
-        self.updateCoreDataObject(entity, pfObject: pfObject, cdObject: cdCreateObject)
-    }
-    
-    func updateCoreDataObject(entity:String, pfObject:AnyObject, cdObject:NSManagedObject) {
-        cdObject.setValue(pfObject["name"], forKey: "name")
-        cdObject.setValue(self.formatNSDateToMatchParse(), forKey: "updatedAt")
-        cdObject.setValue(pfObject["isComplete"], forKey: "isComplete")
-        cdObject.setValue(pfObject["\(kObjectSync.kObjectSynced.rawValue)"], forKey: "syncStatus")
-        
-        if entity == kEntityName.entityList.rawValue {
-            cdObject.setValue(pfObject["user"], forKey: "user")
-            cdObject.setValue(pfObject["category"], forKey: "category")
-            cdObject.setValue(pfObject["items"], forKey: "items")
-        } else {
-            cdObject.setValue(pfObject["isFavorited"], forKey: "isFavorited")
-            cdObject.setValue(pfObject["details"], forKey: "details")
-        }
-        
-        self.coreDataManager.saveMasterContext()
-    }
+    //MARK: Create Methods Core Data
+
     
     func createList(name:String, category:String) {
-        let list:List = NSEntityDescription.insertNewObjectForEntityForName(kEntityName.entityList.rawValue, inManagedObjectContext: self.coreDataManager.masterManagedObjectContext!) as List
+        let list:List = NSEntityDescription.insertNewObjectForEntityForName(kEntityName.entityList.rawValue, inManagedObjectContext: self.coreDataManager.masterManagedObjectContext!) as! List
         
         list.user = PFUser.currentUser() != nil ? PFUser.currentUser().objectId : "anonymous"
         list.name = name
@@ -153,23 +59,10 @@ class SyncManager: NSObject {
         list.syncStatus = "\(kObjectSync.kObjectCreated)"
         list.updatedAt = self.formatNSDateToMatchParse()
         self.coreDataManager.saveMasterContext()
-        self.sync()
-    }
-    
-    func fetchLists() -> NSMutableArray {
-        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: kEntityName.entityList.rawValue)
-        let userPredicate:NSPredicate = NSPredicate(format: "user = %@", self.userDefaults.objectForKey("currentUser") as String)!
-        fetchRequest.predicate = userPredicate
-        
-        var cdResults:NSArray? = NSArray()
-        self.coreDataManager.masterManagedObjectContext!.performBlockAndWait({
-            cdResults = self.coreDataManager.masterManagedObjectContext!.executeFetchRequest(fetchRequest, error: nil)!
-        })
-        return cdResults!.mutableCopy() as NSMutableArray
     }
     
     func createItem(name:String, list:List, details:String) {
-        let item:ListItem = NSEntityDescription.insertNewObjectForEntityForName(kEntityName.entityItem.rawValue, inManagedObjectContext: self.coreDataManager.masterManagedObjectContext!) as ListItem
+        let item:ListItem = NSEntityDescription.insertNewObjectForEntityForName(kEntityName.entityItem.rawValue, inManagedObjectContext: self.coreDataManager.masterManagedObjectContext!) as! ListItem
         
         item.name = name
         item.details = details
@@ -179,13 +72,12 @@ class SyncManager: NSObject {
         list.mutableItems().addObject(item)
         
         self.coreDataManager.saveMasterContext()
-        self.sync()
     }
     
 // MARK: Helper Methods
     
     func getIndexOfCoreDataObjectFromServer(cdo:NSManagedObject, serverResults:NSArray!) -> Int {
-        var uriArray:NSArray = (serverResults as NSArray).valueForKey("objectUri") as NSArray
+        var uriArray:NSArray = (serverResults as NSArray).valueForKey("objectUri") as! NSArray
         var index:Int = uriArray.indexOfObject(cdo.valueForKey("objectUri")!)
         return index
     }
@@ -194,7 +86,7 @@ class SyncManager: NSObject {
         var objectIndex:Int?
         
         for result in coreDataResults {
-            if servo["objectUri"] as NSString == (result as NSManagedObject).objectID.URIRepresentation().absoluteString {
+            if servo["objectUri"] as? NSString == (result as! NSManagedObject).objectID.URIRepresentation().absoluteString {
                 objectIndex = coreDataResults.indexOfObject(result)
             }
         }

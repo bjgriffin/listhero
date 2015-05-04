@@ -28,9 +28,9 @@ class UserManager: NSObject {
         
         alertController.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
             alertAction in
-            let textFields:NSArray = alertController.textFields!
-            let emailField:UITextField = textFields.objectAtIndex(0) as UITextField
-            let passwordField:UITextField = textFields.objectAtIndex(0) as UITextField
+            let textFields = alertController.textFields ?? []
+            let emailField:UITextField = textFields[0] as! UITextField
+            let passwordField:UITextField = textFields[1] as! UITextField
             let userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
 
             PFUser.logInWithUsernameInBackground(emailField.text, password: passwordField.text) {
@@ -48,9 +48,9 @@ class UserManager: NSObject {
         
         alertController.addAction(UIAlertAction(title: "Register", style: UIAlertActionStyle.Default, handler: {
             alertAction in
-            let textFields:NSArray = alertController.textFields!
-            let emailField:UITextField = textFields.objectAtIndex(0) as UITextField
-            let passwordField:UITextField = textFields.objectAtIndex(0) as UITextField
+            let textFields = alertController.textFields ?? []
+            let emailField:UITextField = textFields[0] as! UITextField
+            let passwordField:UITextField = textFields[1] as! UITextField
             let userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
 
             var user:PFUser = PFUser()
@@ -58,17 +58,17 @@ class UserManager: NSObject {
             user.email = emailField.text
             user.password = passwordField.text
             
-            user.signUpInBackgroundWithBlock{
-                (success:Bool!, error:NSError!)->Void in
-                if error != nil {
-                    println(error)
-                    userDefaults.setValue("anonymous", forKey: "currentUser")
-                } else {
-                    userDefaults.setValue(user.objectId, forKey: "currentUser")
-                    NSNotificationCenter.defaultCenter().postNotificationName("signedIn", object: nil)
-                }
-                userDefaults.synchronize()
-            }
+//            user.signUpInBackgroundWithBlock {
+//                (success:Bool!, error:NSError!) -> Void in
+//                if error != nil {
+//                    println(error)
+//                    userDefaults.setValue("anonymous", forKey: "currentUser")
+//                } else {
+//                    userDefaults.setValue(user.objectId, forKey: "currentUser")
+//                    NSNotificationCenter.defaultCenter().postNotificationName("signedIn", object: nil)
+//                }
+//                userDefaults.synchronize()
+//            }
         }))
         
         alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: {

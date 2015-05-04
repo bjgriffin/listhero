@@ -31,10 +31,9 @@ class MainSplitViewController: UISplitViewController {
     // MARK: Trait Collection / Size Delegate Methods
     
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-        var delegate = UIApplication.sharedApplication().delegate as AppDelegate
+        var delegate = UIApplication.sharedApplication().delegate as! AppDelegate
         var shouldBeRegularSizeClass:Bool = self.view.bounds.size.width > 320.0
         var traitCollection:UITraitCollection = shouldBeRegularSizeClass ? UITraitCollection(horizontalSizeClass: UIUserInterfaceSizeClass.Regular) : UITraitCollection(horizontalSizeClass: UIUserInterfaceSizeClass.Compact)
-//        UIStoryboard.containerViewController.setOverrideTraitCollection(traitCollection, forChildViewController: self);
     }
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -42,6 +41,6 @@ class MainSplitViewController: UISplitViewController {
     }
     
     func primaryViewControllerForCollapsingSplitViewController(splitViewController: UISplitViewController!) -> UIViewController! {
-        return self.viewControllers[1] as UIViewController;
+        return self.viewControllers[1] as! UIViewController;
     }
 }

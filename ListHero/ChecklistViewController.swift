@@ -12,7 +12,7 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var navItem: UINavigationItem!
     weak var listsViewController : ListsViewController!
-    lazy var sortedListItems = NSArray()
+    var sortedListItems = Array<ListItem>()
     lazy var coreDataManager = CoreDataManager.sharedInstance
     var syncManager:SyncManager!
     var userDefaults:NSUserDefaults!
@@ -25,13 +25,13 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
         listsViewController = UIStoryboard.listsViewController()
         
         if userDefaults.objectForKey("lastListURI") != nil {
-            for list in syncManager.fetchLists() {
+            for list in syncManager.lists! {
                 if list.objectID.URIRepresentation().absoluteString == userDefaults.objectForKey("lastListURI") as? String {
-                    currentList = list as? List
+                    currentList = list
                 }
             }
         } else {
-            if let lo:List = syncManager.fetchLists().lastObject as? List {
+            if let lo:List = syncManager.lists![syncManager.lists!.count - 1] as? List {
                 currentList = lo
             }
         }
@@ -70,15 +70,16 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func deleteItemsAction() {
-        var array:NSArray? = self.currentList?.items.allObjects as NSArray?
+        var array = self.currentList?.items.allObjects as! Array<ListItem>
         
         var alertController:UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         
         alertController.addAction(UIAlertAction(title: "Delete Completed Items?", style: UIAlertActionStyle.Default, handler: {
             alertAction in
-            var filteredArray:NSArray? = array?.filteredArrayUsingPredicate(NSPredicate(format: "isComplete == %@", true)!)
             
-            for object:AnyObject in filteredArray! {
+            var filteredArray = array.filter({m in m.isComplete == true})
+            
+            for object:ListItem in filteredArray {
                 self.coreDataManager.masterManagedObjectContext?.deleteObject(object as NSManagedObject)
             }
             self.coreDataManager.saveMasterContext()
@@ -86,8 +87,8 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
         }))
         alertController.addAction(UIAlertAction(title: "Delete All Items?", style: UIAlertActionStyle.Default, handler: {
             alertAction in
-            for object:AnyObject in array! {
-                self.coreDataManager.masterManagedObjectContext?.deleteObject(object as NSManagedObject)
+            for object:AnyObject in array {
+                self.coreDataManager.masterManagedObjectContext?.deleteObject(object as! NSManagedObject)
             }
             self.coreDataManager.saveMasterContext()
             self.tableView.reloadData()
@@ -96,9 +97,9 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
         alertController.addAction(UIAlertAction(title: "Delete \(self.currentList!.name)?", style: UIAlertActionStyle.Default, handler: {
             alertAction in
             self.coreDataManager.masterManagedObjectContext?.deleteObject(self.currentList! as NSManagedObject)
-            self.listsViewController?.lists?.removeObject(self.currentList!)
+//            self.listsViewController?.lists?.removeObject(self.currentList!)
             self.coreDataManager.saveMasterContext()
-            self.currentList = self.syncManager.fetchLists().lastObject? as? List
+//            self.currentList = self.syncManager.lists.lastObject? as? List
             self.addNavTitles(self.currentList!.name)
             self.listsViewController?.tableView.reloadData()
             self.tableView.reloadData()
@@ -129,9 +130,9 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
         }))
         alertController.addAction(UIAlertAction(title: "Add", style: UIAlertActionStyle.Default, handler: {
             alertAction in
-            let textFields:NSArray = alertController.textFields!
-            let nameTextField:UITextField = textFields.objectAtIndex(0) as UITextField
-            let notesTextField:UITextField = textFields.objectAtIndex(1) as UITextField
+            let textFields = alertController.textFields ?? []
+            let nameTextField = textFields[0] as! UITextField
+            let notesTextField = textFields[1] as! UITextField
             
             let itemName:String = nameTextField.text
             let notes:String = notesTextField.text
@@ -161,21 +162,21 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
         }))
         alertController.addAction(UIAlertAction(title: "Add", style: UIAlertActionStyle.Default, handler: {
             alertAction in
-            let textFields:NSArray = alertController.textFields!
-            let nameTextField:UITextField = textFields.objectAtIndex(0) as UITextField
-            let categoryTextField:UITextField = textFields.objectAtIndex(0) as UITextField
+            let textFields = alertController.textFields ?? []
+            let nameTextField = textFields[0] as! UITextField
+            let categoryTextField = textFields[0] as! UITextField
             
             let name:String = nameTextField.text
             let category:String = categoryTextField.text
 
             self.syncManager.createList(name, category: category)
-            if let lo:List = self.syncManager.fetchLists().lastObject as? List {
-                self.currentList = lo
-            }
+//            if let lo:List = self.syncManager.lists.lastObject as? List {
+//                self.currentList = lo
+//            }
             //TODO: Remove code below and add KVO
             self.addNavTitles(name)
             self.tableView.reloadData()
-            self.listsViewController?.lists = self.syncManager.fetchLists()
+//            self.listsViewController?.lists = self.syncManager.fetchLists()
             self.listsViewController?.tableView.reloadData()
         }))
         self.presentViewController(alertController, animated: false, completion: nil)
@@ -194,7 +195,7 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     // MARK: Trait Collection / Size Delegate Methods
     
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-        var array:NSArray = [self.navItem.rightBarButtonItem!,UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action:Selector("deleteItemsAction"))]
+        var array = [self.navItem.rightBarButtonItem!,UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Trash, target: self, action:Selector("deleteItemsAction"))]
         
         if self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Compact {
             self.navigationItem.setRightBarButtonItems(array, animated: false)
@@ -211,20 +212,17 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     
     // MARK: UITableView Datasource Methods
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:ListTableViewCell = self.tableView.dequeueReusableCellWithIdentifier("ListTableViewCell") as ListTableViewCell
+        var cell = self.tableView.dequeueReusableCellWithIdentifier("ListTableViewCell") as! ListTableViewCell
         cell.delegate = self
         
         if let cl:List = self.currentList {
+            var items = cl.items.allObjects as! Array<ListItem>
 
-            var items:NSArray = cl.items.allObjects as NSArray
-
-            var sortDescriptor:NSSortDescriptor = NSSortDescriptor(key: "updatedAt", ascending: false)
-            var descriptors:NSArray = NSArray(objects: sortDescriptor)
-            self.sortedListItems = items.sortedArrayUsingDescriptors(descriptors)
-            
-            var object:ListItem = self.sortedListItems.objectAtIndex(indexPath.row) as ListItem
-            cell.item = object
-            cell.itemName.text = object.name
+//            self.sortedListItems = items.sorted({ $0.updatedAt.compare($1.updatedAt) == .OrderedDescending })
+//            
+//            var object = self.sortedListItems[indexPath.row] as! ListItem
+//            cell.item = object
+//            cell.itemName.text = object.name
             cell.setupCell()
         }
         

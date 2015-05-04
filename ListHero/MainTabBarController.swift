@@ -12,7 +12,7 @@ class MainTabBarController: UITabBarController {
     @IBOutlet weak var signInOutBarButtonItem: UIBarButtonItem!
     @IBOutlet weak var profileBarButttonItem: UIBarButtonItem!
     let userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-    var barButtonsArray:NSMutableArray = NSMutableArray()
+    var barButtonsArray = Array<UIBarButtonItem>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +46,7 @@ class MainTabBarController: UITabBarController {
     func signedInSetup() {
         if (self.navigationItem.leftBarButtonItems == nil) {
             if (barButtonsArray.count != 0) {
-                self.navigationItem.leftBarButtonItem = barButtonsArray.objectAtIndex(0) as? UIBarButtonItem
+                self.navigationItem.leftBarButtonItem = barButtonsArray[0] as UIBarButtonItem
             }
         }
         self.signInOutBarButtonItem.title! = "Sign Out"
@@ -57,8 +57,9 @@ class MainTabBarController: UITabBarController {
             userDefaults.setValue("anonymous", forKey: "currentUser")
             PFUser.logOut()
         }
-        if !barButtonsArray.containsObject(self.profileBarButttonItem) {
-            barButtonsArray.addObject(profileBarButttonItem)
+        
+        if !contains(barButtonsArray, self.profileBarButttonItem) {
+            barButtonsArray.append(profileBarButttonItem)
         }
         self.navigationItem.leftBarButtonItems = nil
         self.signInOutBarButtonItem.title! = "Sign In"

@@ -44,7 +44,7 @@ class FavoritesViewController: UIViewController {
     // MARK: UITableView Datasource Methods
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:FavoriteTableViewCell = self.tableView.dequeueReusableCellWithIdentifier("FavoriteTableViewCell") as FavoriteTableViewCell
+        var cell:FavoriteTableViewCell = self.tableView.dequeueReusableCellWithIdentifier("FavoriteTableViewCell") as! FavoriteTableViewCell
         sortedFavoriteItems = favoriteItems.sorted({ $0.updatedAt.compare($1.updatedAt) == NSComparisonResult.OrderedAscending })
             
             var item:ListItem = self.sortedFavoriteItems[indexPath.row] as ListItem
@@ -61,7 +61,7 @@ class FavoritesViewController: UIViewController {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count:Int = 0
         
-        if let items:NSArray = self.favoriteItems {
+        if let items = self.favoriteItems {
             count = items.count
         }
         return count
