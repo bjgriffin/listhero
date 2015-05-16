@@ -11,27 +11,27 @@ import CoreData
 class ChecklistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CellActionDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var navItem: UINavigationItem!
-    weak var listsViewController : ListsViewController!
     var sortedListItems = Array<ListItem>()
     lazy var coreDataManager = CoreDataManager.sharedInstance
-    var syncManager:SyncManager!
+    var defaultCenter = NSNotificationCenter.defaultCenter()
+    var dataManager:DataManager!
     var userDefaults:NSUserDefaults!
     var currentList:List?
     
     required init(coder aDecoder: NSCoder)
     {
-        syncManager = SyncManager.sharedInstance
+        dataManager = DataManager.sharedInstance
+        currentList = dataManager.currentList
         userDefaults = NSUserDefaults.standardUserDefaults()
-        listsViewController = UIStoryboard.listsViewController()
         
         if userDefaults.objectForKey("lastListURI") != nil {
-            for list in syncManager.lists! {
+            for list in dataManager.lists! {
                 if list.objectID.URIRepresentation().absoluteString == userDefaults.objectForKey("lastListURI") as? String {
                     currentList = list
                 }
             }
         } else {
-            if let lo:List = syncManager.lists![syncManager.lists!.count - 1] as? List {
+            if let count = dataManager.lists?.count, lo = dataManager.lists?[count - 1] {
                 currentList = lo
             }
         }
@@ -48,9 +48,11 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
         var nib = UINib(nibName: "ListTableViewCell", bundle: nil)
         self.tableView.registerNib(nib, forCellReuseIdentifier: "ListTableViewCell")
         
-        if let lo:List = self.currentList {
+        if let lo:List = currentList {
             self.addNavTitles(lo.name)
         }
+        
+        defaultCenter.addObserver(self, selector: "listSelected:", name: "listSelected", object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -65,12 +67,25 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
+    //MARK: NSNotificationCenter callbacks
+    func listSelected(notification:NSNotification) {
+        if let currentlist = currentList {
+            addNavTitles(currentlist.name)
+            tableView.reloadData()
+            
+            //TODO: Validate push for checklist vc
+            if self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Compact {
+                self.navigationController?.pushViewController(self, animated: true)
+            }
+        }
+    }
+    
     func showSignUpAlert() {
         self.presentViewController(UserManager.showLoginAlertController(), animated: true, completion: nil)
     }
     
     func deleteItemsAction() {
-        var array = self.currentList?.items.allObjects as! Array<ListItem>
+        var array = currentList?.items.allObjects as! Array<ListItem>
         
         var alertController:UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         
@@ -94,14 +109,20 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
             self.tableView.reloadData()
         }))
         
-        alertController.addAction(UIAlertAction(title: "Delete \(self.currentList!.name)?", style: UIAlertActionStyle.Default, handler: {
+        alertController.addAction(UIAlertAction(title: "Delete \(self.currentList?.name)?", style: UIAlertActionStyle.Default, handler: {
             alertAction in
-            self.coreDataManager.masterManagedObjectContext?.deleteObject(self.currentList! as NSManagedObject)
-//            self.listsViewController?.lists?.removeObject(self.currentList!)
-            self.coreDataManager.saveMasterContext()
-//            self.currentList = self.syncManager.lists.lastObject? as? List
-            self.addNavTitles(self.currentList!.name)
-            self.listsViewController?.tableView.reloadData()
+            if var currentlist = self.currentList, lists = self.dataManager.lists, var indexOfCurrentList = find(lists, currentlist) {
+
+                self.coreDataManager.masterManagedObjectContext?.deleteObject(currentlist as NSManagedObject)
+                lists.removeAtIndex(indexOfCurrentList)
+                self.coreDataManager.saveMasterContext()
+                
+                if let list = self.dataManager.lists?.last {
+                    self.currentList = list
+                    self.addNavTitles(self.currentList!.name)
+                }
+            }
+            self.defaultCenter.postNotificationName("listsUpdated", object: nil, userInfo: nil)
             self.tableView.reloadData()
         }))
         
@@ -134,19 +155,20 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
             let nameTextField = textFields[0] as! UITextField
             let notesTextField = textFields[1] as! UITextField
             
-            let itemName:String = nameTextField.text
-            let notes:String = notesTextField.text
+            let itemName = nameTextField.text
+            let notes = notesTextField.text
             
-            self.syncManager.createItem(itemName, list: self.currentList!, details: notes)
+            if let currentlist = self.currentList {
+                self.dataManager.createItem(itemName, list: currentlist, details: notes)
+            }
             
-            //TODO: Remove reloadData code below and add KVO
             self.tableView.reloadData()
         }))
-        self.presentViewController(alertController, animated: false, completion: nil)
+        presentViewController(alertController, animated: false, completion: nil)
     }
     
     @IBAction func createListAction(sender: AnyObject) {
-        var alertController:UIAlertController = UIAlertController(title: "New List", message: "", preferredStyle: UIAlertControllerStyle.Alert)
+        var alertController = UIAlertController(title: "New List", message: "", preferredStyle: UIAlertControllerStyle.Alert)
 
         alertController.addTextFieldWithConfigurationHandler({
             textField in
@@ -169,15 +191,14 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
             let name:String = nameTextField.text
             let category:String = categoryTextField.text
 
-            self.syncManager.createList(name, category: category)
-//            if let lo:List = self.syncManager.lists.lastObject as? List {
-//                self.currentList = lo
-//            }
-            //TODO: Remove code below and add KVO
+            self.dataManager.createList(name, category: category)
+            if let list = self.dataManager.lists?.last {
+                self.currentList = list
+            }
+
             self.addNavTitles(name)
+            self.defaultCenter.postNotificationName("listsUpdated", object: nil, userInfo: nil)
             self.tableView.reloadData()
-//            self.listsViewController?.lists = self.syncManager.fetchLists()
-            self.listsViewController?.tableView.reloadData()
         }))
         self.presentViewController(alertController, animated: false, completion: nil)
     }
@@ -218,11 +239,11 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
         if let cl:List = self.currentList {
             var items = cl.items.allObjects as! Array<ListItem>
 
-//            self.sortedListItems = items.sorted({ $0.updatedAt.compare($1.updatedAt) == .OrderedDescending })
-//            
-//            var object = self.sortedListItems[indexPath.row] as! ListItem
-//            cell.item = object
-//            cell.itemName.text = object.name
+            self.sortedListItems = items.sorted({ $0.updatedAt.compare($1.updatedAt) == .OrderedDescending })
+            
+            var object = self.sortedListItems[indexPath.row] as ListItem
+            cell.item = object
+            cell.itemName.text = object.name
             cell.setupCell()
         }
         
@@ -230,7 +251,7 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var count:Int = 0
+        var count = 0
         
         if let cl:List = self.currentList {
             count = cl.items.count

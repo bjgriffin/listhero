@@ -52,7 +52,7 @@
 		36922C1019D217B00002DC29 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36922C0F19D217B00002DC29 /* List.swift */; };
 		36922C1219D217BF0002DC29 /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36922C1119D217BF0002DC29 /* ListItem.swift */; };
 		36933AA519760CB70015FD2F /* ChecklistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36933AA419760CB70015FD2F /* ChecklistViewController.swift */; };
-		3698CA3419CD241200D273AE /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3698CA3319CD241200D273AE /* SyncManager.swift */; };
+		3698CA3419CD241200D273AE /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3698CA3319CD241200D273AE /* DataManager.swift */; };
 		369A908219C768DC00568D79 /* ListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369A908119C768DC00568D79 /* ListsViewController.swift */; };
 		36AD6B52196F77A300EAFBED /* MainSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36AD6B51196F77A300EAFBED /* MainSplitViewController.swift */; };
 		36BEF3B419C0CB2F00C3E266 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36BEF3B319C0CB2F00C3E266 /* CoreDataManager.swift */; };
@@ -132,7 +132,7 @@
 		36922C0F19D217B00002DC29 /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = List.swift; path = ../List.swift; sourceTree = "<group>"; };
 		36922C1119D217BF0002DC29 /* ListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListItem.swift; path = ../ListItem.swift; sourceTree = "<group>"; };
 		36933AA419760CB70015FD2F /* ChecklistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChecklistViewController.swift; sourceTree = "<group>"; };
-		3698CA3319CD241200D273AE /* SyncManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncManager.swift; sourceTree = "<group>"; };
+		3698CA3319CD241200D273AE /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		369A908119C768DC00568D79 /* ListsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListsViewController.swift; sourceTree = "<group>"; };
 		36AD6B51196F77A300EAFBED /* MainSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSplitViewController.swift; sourceTree = "<group>"; };
 		36BEF3B319C0CB2F00C3E266 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -269,7 +269,7 @@
 		366E656719D49DDF006023FB /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				3698CA3319CD241200D273AE /* SyncManager.swift */,
+				3698CA3319CD241200D273AE /* DataManager.swift */,
 				36BEF3B319C0CB2F00C3E266 /* CoreDataManager.swift */,
 				360A76C119C29F4C00492502 /* UserManager.swift */,
 			);
@@ -501,7 +501,7 @@
 				3626C8E419D9EC9D0098452D /* NSManagedObjectExtension.swift in Sources */,
 				36BEF3B419C0CB2F00C3E266 /* CoreDataManager.swift in Sources */,
 				36E810DE196E1BE30090F951 /* AppDelegate.swift in Sources */,
-				3698CA3419CD241200D273AE /* SyncManager.swift in Sources */,
+				3698CA3419CD241200D273AE /* DataManager.swift in Sources */,
 				368CDF3719C863DE00624264 /* MainTabBarController.swift in Sources */,
 				366E656F19D4AC49006023FB /* FavoriteTableViewCell.swift in Sources */,
 				36E810E1196E1BE30090F951 /* ListHero.xcdatamodeld in Sources */,

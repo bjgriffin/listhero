@@ -10,7 +10,7 @@ import UIKit
 
 class FavoritesViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
-    lazy var syncManager = SyncManager.sharedInstance
+    lazy var dataManager = DataManager.sharedInstance
     lazy var sortedFavoriteItems = Array<ListItem>()
     var favoriteItems:Array<ListItem>!
     weak var checklistViewController : ChecklistViewController!

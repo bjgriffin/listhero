@@ -12,26 +12,24 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var tableView: UITableView!
     lazy var userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
     lazy var sortedLists = Array<List>()
-    weak var checklistViewController : ChecklistViewController!
-    var syncManager:SyncManager!
-    var lists:Array<List>!
+    var defaultCenter = NSNotificationCenter.defaultCenter()
+    var dataManager = DataManager.sharedInstance
+    var lists:Array<List>?
     
     required init(coder aDecoder: NSCoder) {
-        syncManager = SyncManager.sharedInstance
-        lists = syncManager.lists
-        checklistViewController = UIStoryboard.checklistViewController()
         super.init(coder: aDecoder)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.styleTableView()
-        
+        lists = dataManager.lists
+
+        styleTableView()
+        defaultCenter.addObserver(self, selector: Selector("listsUpdated:"), name: "listsUpdated", object: nil)
         var nib = UINib(nibName: "DrawerTableViewCell", bundle: nil)
-        self.tableView.registerNib(nib, forCellReuseIdentifier: "DrawerTableViewCell")
+        tableView.registerNib(nib, forCellReuseIdentifier: "DrawerTableViewCell")
         
-        self.tabBarItem.selectedImage = UIImage(named:"pencil-icon-tab.png")
+        tabBarItem.selectedImage = UIImage(named:"pencil-icon-tab.png")
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,33 +37,44 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        defaultCenter.removeObserver(self, name: "listsUpdated", object: nil)
+    }
+    
+    //MARK: NSNotificationCenter callbacks
+    func listsUpdated(notification:NSNotification) {
+        tableView.reloadData()
+    }
+    
     // MARK: Helper Methods
     func styleTableView() {
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None;
-        self.tableView.backgroundColor = UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.0);
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.None;
+        tableView.backgroundColor = UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.0);
     }
     
     // MARK: UITableView Datasource Methods
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = self.tableView.dequeueReusableCellWithIdentifier("DrawerTableViewCell") as! DrawerTableViewCell
+        var cell = tableView.dequeueReusableCellWithIdentifier("DrawerTableViewCell") as! DrawerTableViewCell
         cell.delegate = self
         
-        sortedLists = lists.sorted({ $0.updatedAt.compare($1.updatedAt) == NSComparisonResult.OrderedDescending })
-        var list = self.sortedLists[indexPath.row] as List
+        if let lists = lists {
+            sortedLists = lists.sorted({ $0.updatedAt.compare($1.updatedAt) == NSComparisonResult.OrderedDescending })
+            var list = self.sortedLists[indexPath.row] as List
         
-        if list.objectID.URIRepresentation().absoluteString == self.checklistViewController.currentList?.objectID.URIRepresentation().absoluteString {
-            self.tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)
+            if list.objectID.URIRepresentation().absoluteString == dataManager.currentList?.objectID.URIRepresentation().absoluteString {
+                tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)
+            }
+            
+            cell.listName.text = list.name
+            cell.list = list
         }
-        
-        cell.listName.text = list.name
-        cell.list = list
-        
         return cell
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lists.count
+        return lists?.count ?? 0
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -75,13 +84,8 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     // MARK: UITableView Delegate Methods
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.checklistViewController.currentList = self.sortedLists[indexPath.row]
-        self.checklistViewController.addNavTitles(self.checklistViewController.currentList!.name)
-        self.checklistViewController.tableView.reloadData()
-        
-        if self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Compact {
-            self.navigationController?.pushViewController(self.checklistViewController, animated: true)
-        }
+        dataManager.currentList = sortedLists[indexPath.row]
+        defaultCenter.postNotificationName("listSelected", object: nil, userInfo: nil)
     }
     
     // MARK: DrawerCellActionDelegate Methods
@@ -102,7 +106,7 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             let textFields = alertController.textFields ?? []
             let nameTextField:UITextField = textFields[0] as! UITextField
             cell.list?.name = nameTextField.text
-            self.syncManager.coreDataManager.saveMasterContext()
+            self.dataManager.coreDataManager.saveMasterContext()
             self.tableView.reloadData()
             alertController.dismissViewControllerAnimated(true, completion: nil)
         }))

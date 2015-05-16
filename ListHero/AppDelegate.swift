@@ -14,13 +14,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             
     var window: UIWindow?
     let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-    var syncManager = SyncManager.sharedInstance
+    let dataManager = DataManager.sharedInstance
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         Parse.setApplicationId("C5ajjGiFo0SamAC4bin6DHiSO9SQdpove7llmmgg", clientKey: "mo8Su2bCJcvuc1r2sAJ70mqKQormqS2jctfjD2ZI");
         
         //Save currentUser to either anonymous or current user
         UserManager.updateUser()
+        
+        //Currently only requesting core data lists
+        dataManager.requestListsCD()
         
         return true
     }
@@ -31,11 +34,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
-
-//        if let list:List = self.containerViewController!.mainSplitViewController.checklistViewController.currentList {
-//            self.defaults.setObject(list.objectID.URIRepresentation().absoluteString, forKey: "lastListURI")
-//            self.defaults.synchronize()
-//        }
+        if let list:List = dataManager.currentList {
+            self.defaults.setObject(list.objectID.URIRepresentation().absoluteString, forKey: "lastListURI")
+            self.defaults.synchronize()
+        }
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
