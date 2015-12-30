@@ -13,11 +13,16 @@ enum kEntityName: String {
     case entityList = "List", entityItem = "ListItem"
 }
 
+let dataManager = DataManager.sharedInstance
+
 class DataManager: NSObject {
-    var coreDataManager = CoreDataManager.sharedInstance
-    var lists : Array<List>?
-    var currentList : List?
+    let coreDataManager = CoreDataManager()
+    let webServiceManager = WebServiceManager()
     let userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    var lists : [List]?
+    var favoriteItems : [ListItem]?
+    var currentList : List?
+    var currentListItems : [ListItem]?
 
     class var sharedInstance : DataManager {
         struct Static {
@@ -26,111 +31,117 @@ class DataManager: NSObject {
         return Static.instance
     }
     
-    //MARK: Request Methods Core Data
+    //MARK: Fetch Methods
     
-    func requestListsCD() {
-        var lists = [] //Clear lists on fetch
-        
-        var fetchRequest:NSFetchRequest = NSFetchRequest(entityName: kEntityName.entityList.rawValue)
-        let userPredicate:NSPredicate = NSPredicate(format: "user = %@", self.userDefaults.objectForKey("currentUser") as! String)
-        fetchRequest.predicate = userPredicate
-        
-        var cdResults = Array<List>()
-        
-        cdResults = self.coreDataManager.masterManagedObjectContext?.executeFetchRequest(fetchRequest, error: nil) as! Array<List>
-        
-        lists = cdResults
+    func fetchLists(completion:(objects:[List]?, error:ErrorType?) -> Void) {
+        coreDataManager.fetchLists() {
+            objects, error in
+            //TODO: Handle Error
+            completion(objects: objects, error: error)
+        }
     }
     
-    //MARK: Methods to call (Create)
-    
-    func createList(name:String, category:String) {
-        PFUser.currentUser() != nil ? createListRemote(name, category: category) : createListCD(name, category: category)
+    func fetchFavorites(completion:(objects:[ListItem]?, error:ErrorType?) -> Void) {
+        coreDataManager.fetchFavorites() {
+            objects, error in
+            //TODO: Handle Error
+            completion(objects: objects, error: error)
+        }
     }
     
-    func createItem(name:String, list:List, details:String) {
-        PFUser.currentUser() != nil ? createItemRemote(name, list: list, details: details) : createItemCD(name, list: list, details: details)
-    }
+    //MARK: Update Methods
     
-    //MARK: Create Methods Core Data
-
-    private func createListCD(name:String, category:String) {
-        let list:List = NSEntityDescription.insertNewObjectForEntityForName(kEntityName.entityList.rawValue, inManagedObjectContext: self.coreDataManager.masterManagedObjectContext!) as! List
-        
-        list.user = PFUser.currentUser() != nil ? PFUser.currentUser().objectId : "anonymous"
-        list.name = name
-        list.category = category
-        list.updatedAt = self.formatNSDateToMatchParse()
-        self.coreDataManager.saveMasterContext()
-    }
-    
-    private func createItemCD(name:String, list:List, details:String) {
-        let item:ListItem = NSEntityDescription.insertNewObjectForEntityForName(kEntityName.entityItem.rawValue, inManagedObjectContext: self.coreDataManager.masterManagedObjectContext!) as! ListItem
-        
-        item.name = name
-        item.details = details
-        item.updatedAt = self.formatNSDateToMatchParse()
-        
-        list.mutableItems().addObject(item)
-        
-        self.coreDataManager.saveMasterContext()
-    }
-    
-    //MARK: Create Methods Remote Service
-    
-    private func createListRemote(name:String, category:String) {
-        var list = PFObject(className: "List")
-        list["user"] = PFUser.currentUser() != nil ? PFUser.currentUser().objectId : "anonymous"
-        list["name"] = name
-        list["createdAt"] = self.formatNSDateToMatchParse()
-        list["updatedAt"] = self.formatNSDateToMatchParse()
-        list.saveInBackgroundWithBlock({(success:Bool, error:NSError?) -> Void in
-            if success {
-            
-            } else {
-                if let error = error {
-                    println(error)
-                }
-            }
-        })
-    }
-    
-    private func createItemRemote(name:String, list:List, details:String) {
-        var item = PFObject(className: "ListItem")
-        
-        item["name"] = name
-        item["details"] = details
-        item["updatedAt"] = self.formatNSDateToMatchParse()
-        
-        list.mutableItems().addObject(item)
-        item.saveInBackgroundWithBlock({(success:Bool, error:NSError?) -> Void in
-            if success {
-                
-            } else {
-                if let error = error {
-                    println(error)
-                }
-            }
-        })
+    func updateCurrentData() {
+        updateCurrentList()
+        updateCurrentListItems()
     }
 
-    
-// MARK: Helper Methods
-    
-    func formatNSDateToMatchParse() -> NSDate {
-        var now = NSDate()
-        var calendar = NSCalendar.currentCalendar()
-        var components = calendar.components((NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitHour | NSCalendarUnit.CalendarUnitMinute | NSCalendarUnit.CalendarUnitSecond), fromDate: now)
-        components.hour = 0
-        components.minute = 1
-        components.second = 0
-        var morningStart = calendar.dateFromComponents(components)
-        
-        var formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        var strFromDate = formatter.stringFromDate(morningStart!)
-        now = formatter.dateFromString(strFromDate)!
-        
-        return now
+    func updateCurrentList() {
+        currentList = lists?.last
     }
+    
+    func updateCurrentList(id:String) {
+        let array = lists?.filter { $0.objectID.URIRepresentation().absoluteString == id }
+        currentList = array?.first
+    }
+    
+    func updateCurrentListItems() {
+        currentListItems = (currentList?.items.allObjects as? [ListItem])?.sort { $0.createdAt.compare($1.createdAt) == .OrderedAscending }
+    }
+    
+    func updateFavorited(item:ListItem, completion:(error:ErrorType?) -> Void) {
+        coreDataManager.updateFavorited(item) {
+            error in
+            completion(error:error)
+        }
+    }
+    
+    func updateCompleted(item:ListItem, completion:(error:ErrorType?) -> Void) {
+        coreDataManager.updateCompleted(item) {
+            error in
+            completion(error:error)
+        }
+    }
+    
+    func updateItemName(list:List, name:String, completion:(error:ErrorType?) -> Void) {
+        coreDataManager.updateListName(list, name: name) {
+            error in
+            completion(error:error)
+        }
+    }
+    
+    //MARK: Create Methods
+    
+    func createList(name:String, category:String, completion:(error:ErrorType?) -> Void) {
+        if PFUser.currentUser() != nil {
+            webServiceManager.createListRemote(name, category: category) {
+                error in
+                self.coreDataManager.createList(name, category: category) {
+                    error in
+                    completion(error:error)
+                }
+            }
+        } else {
+            coreDataManager.createList(name, category: category) {
+                error in
+                completion(error:error)
+            }
+        }
+        
+    }
+    
+    func createItem(name:String, list:List, details:String, completion:(error:ErrorType?) -> Void) {
+        if PFUser.currentUser() != nil {
+            webServiceManager.createItemRemote(name, list: list, details: details) {
+                error in
+                self.coreDataManager.createItem(name, list: list, details: details) {
+                    error in
+                    completion(error:error)
+                }
+            }
+        } else {
+            coreDataManager.createItem(name, list: list, details: details) {
+                error in
+                completion(error:error)
+            }
+        }
+        
+    }
+    
+    //MARK: Delete Methods
+
+    func deleteItem(item:ListItem, completion:(error:ErrorType?) -> Void) {
+        coreDataManager.deleteItem(item) {
+            error in
+            completion(error:error)
+        }
+    }
+    
+    func deleteList(list:List, completion:(error:ErrorType?) -> Void) {
+        coreDataManager.deleteList(list) {
+            error in
+            completion(error:error)
+        }
+    }
+    
 }

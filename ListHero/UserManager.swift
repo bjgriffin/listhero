@@ -12,8 +12,8 @@ import CoreData
 class UserManager: NSObject {
     
     class func showLoginAlertController() -> UIAlertController {
-        var coreDataManager = CoreDataManager.sharedInstance
-        var alertController:UIAlertController = UIAlertController(title: "Sign In/Up", message: "Sign in or register for a new account", preferredStyle: UIAlertControllerStyle.Alert)
+//        var coreDataManager = CoreDataManager.sharedInstance
+        let alertController:UIAlertController = UIAlertController(title: "Sign In/Up", message: "Sign in or register for a new account", preferredStyle: UIAlertControllerStyle.Alert)
         
         alertController.addTextFieldWithConfigurationHandler({
             textField in
@@ -29,14 +29,14 @@ class UserManager: NSObject {
         alertController.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.Default, handler: {
             alertAction in
             let textFields = alertController.textFields ?? []
-            let emailField:UITextField = textFields[0] as! UITextField
-            let passwordField:UITextField = textFields[1] as! UITextField
+            let emailField = textFields[0]
+            let passwordField = textFields[1]
             let userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
 
             PFUser.logInWithUsernameInBackground(emailField.text, password: passwordField.text) {
                 (user:PFUser!, error:NSError!) -> Void in
                 if(error != nil) {
-                    println(error)
+                    print(error)
                     userDefaults.setValue("anonymous", forKey: "currentUser")
                 } else {
                     userDefaults.setValue(user.objectId, forKey: "currentUser")
@@ -49,11 +49,10 @@ class UserManager: NSObject {
         alertController.addAction(UIAlertAction(title: "Register", style: UIAlertActionStyle.Default, handler: {
             alertAction in
             let textFields = alertController.textFields ?? []
-            let emailField:UITextField = textFields[0] as! UITextField
-            let passwordField:UITextField = textFields[1] as! UITextField
-            let userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+            let emailField:UITextField = textFields[0] 
+            let passwordField:UITextField = textFields[1] 
 
-            var user:PFUser = PFUser()
+            let user:PFUser = PFUser()
             user.username = emailField.text
             user.email = emailField.text
             user.password = passwordField.text

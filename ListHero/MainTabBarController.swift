@@ -9,19 +9,19 @@
 import UIKit
 
 class MainTabBarController: UITabBarController {
-    @IBOutlet weak var signInOutBarButtonItem: UIBarButtonItem!
-    @IBOutlet weak var profileBarButttonItem: UIBarButtonItem!
+//    @IBOutlet weak var signInOutBarButtonItem: UIBarButtonItem!
+//    @IBOutlet weak var profileBarButttonItem: UIBarButtonItem!
     let userDefaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var barButtonsArray = Array<UIBarButtonItem>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let user:PFUser = PFUser.currentUser() {
-            self.signedInSetup()
-        } else {
-            self.signedOutSetup(false)
-        }
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "signedInNotification:", name:"signedIn", object: nil)
+//        if let user:PFUser = PFUser.currentUser() {
+//            self.signedInSetup()
+//        } else {
+//            self.signedOutSetup(false)
+//        }
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "signedInNotification:", name:"signedIn", object: nil)
     }
     
     func signedInNotification(notification: NSNotification) {
@@ -34,35 +34,35 @@ class MainTabBarController: UITabBarController {
     }
     
     @IBAction func signInOutAction(sender: AnyObject) {
-        if let title:String! = self.signInOutBarButtonItem.title {
-            if title == "Sign In" {
-                self.presentViewController(UserManager.showLoginAlertController(), animated: true, completion: nil)
-            } else {
-                self.signedOutSetup(true)
-            }
-        }
+//        if let title:String! = self.signInOutBarButtonItem.title {
+//            if title == "Sign In" {
+//                self.presentViewController(UserManager.showLoginAlertController(), animated: true, completion: nil)
+//            } else {
+//                self.signedOutSetup(true)
+//            }
+//        }
     }
     
     func signedInSetup() {
-        if (self.navigationItem.leftBarButtonItems == nil) {
-            if (barButtonsArray.count != 0) {
-                self.navigationItem.leftBarButtonItem = barButtonsArray[0] as UIBarButtonItem
-            }
-        }
-        self.signInOutBarButtonItem.title! = "Sign Out"
+//        if (self.navigationItem.leftBarButtonItems == nil) {
+//            if (barButtonsArray.count != 0) {
+//                self.navigationItem.leftBarButtonItem = barButtonsArray[0] as UIBarButtonItem
+//            }
+//        }
+//        self.signInOutBarButtonItem.title! = "Sign Out"
     }
     
     func signedOutSetup(performLogOut: Bool) {
-        if performLogOut {
-            userDefaults.setValue("anonymous", forKey: "currentUser")
-            PFUser.logOut()
-        }
-        
-        if !contains(barButtonsArray, self.profileBarButttonItem) {
-            barButtonsArray.append(profileBarButttonItem)
-        }
-        self.navigationItem.leftBarButtonItems = nil
-        self.signInOutBarButtonItem.title! = "Sign In"
+//        if performLogOut {
+//            userDefaults.setValue("anonymous", forKey: "currentUser")
+//            PFUser.logOut()
+//        }
+//        
+//        if !barButtonsArray.contains(profileBarButttonItem) {
+//            barButtonsArray.append(profileBarButttonItem)
+//        }
+//        self.navigationItem.leftBarButtonItems = nil
+//        self.signInOutBarButtonItem.title! = "Sign In"
     }
 
     /*

@@ -13,14 +13,14 @@ class MainSplitViewController: UISplitViewController {
      var checklistViewController : ChecklistViewController!
      var favoritesViewController : FavoritesViewController!
 
-    required init(coder aDecoder: NSCoder)
+    required init?(coder aDecoder: NSCoder)
     {
         super.init(coder: aDecoder)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.preferredDisplayMode = UISplitViewControllerDisplayMode.AllVisible;
+        preferredDisplayMode = .AllVisible
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,9 +31,8 @@ class MainSplitViewController: UISplitViewController {
     // MARK: Trait Collection / Size Delegate Methods
     
     override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
-        var delegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        var shouldBeRegularSizeClass:Bool = self.view.bounds.size.width > 320.0
-        var traitCollection:UITraitCollection = shouldBeRegularSizeClass ? UITraitCollection(horizontalSizeClass: UIUserInterfaceSizeClass.Regular) : UITraitCollection(horizontalSizeClass: UIUserInterfaceSizeClass.Compact)
+        let shouldBeRegularSizeClass:Bool = self.view.bounds.size.width > 320.0
+        let _ = shouldBeRegularSizeClass ? UITraitCollection(horizontalSizeClass: UIUserInterfaceSizeClass.Regular) : UITraitCollection(horizontalSizeClass: UIUserInterfaceSizeClass.Compact)
     }
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -41,6 +40,6 @@ class MainSplitViewController: UISplitViewController {
     }
     
     func primaryViewControllerForCollapsingSplitViewController(splitViewController: UISplitViewController!) -> UIViewController! {
-        return self.viewControllers[1] as! UIViewController;
+        return self.viewControllers[1]
     }
 }

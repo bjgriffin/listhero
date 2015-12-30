@@ -17,6 +17,9 @@ class ListItem: NSManagedObject {
     @NSManaged var name: String
     @NSManaged var objectId: String
     @NSManaged var syncStatus: String
+    @NSManaged var createdAt: NSDate
     @NSManaged var updatedAt: NSDate
     @NSManaged var lists: NSSet
+    
+    @NSManaged func addLists(lists: NSSet)
 }

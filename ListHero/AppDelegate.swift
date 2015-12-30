@@ -13,17 +13,30 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
                             
     var window: UIWindow?
-    let defaults:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-    let dataManager = DataManager.sharedInstance
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
         Parse.setApplicationId("C5ajjGiFo0SamAC4bin6DHiSO9SQdpove7llmmgg", clientKey: "mo8Su2bCJcvuc1r2sAJ70mqKQormqS2jctfjD2ZI");
         
         //Save currentUser to either anonymous or current user
-        UserManager.updateUser()
+//        UserManager.updateUser()
         
-        //Currently only requesting core data lists
-        dataManager.requestListsCD()
+        dataManager.fetchLists() {
+            objects, error in
+            if error == nil {
+                dataManager.lists = objects
+                dataManager.updateCurrentData()
+                if let currentListObjectId = NSUserDefaults.standardUserDefaults().objectForKey("currentList") as? String {
+                    dataManager.updateCurrentList(currentListObjectId)
+                    dataManager.updateCurrentListItems()
+                }
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName("listsUpdated", object: nil, userInfo: nil)
+        }
+        
+        dataManager.fetchFavorites() {
+            objects, error in
+            dataManager.favoriteItems = objects
+        }
         
         return true
     }
@@ -31,13 +44,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        if let currentList = dataManager.currentList {
+            NSUserDefaults.standardUserDefaults().setObject(currentList.objectID.URIRepresentation().absoluteString, forKey: "currentList")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
-        if let list:List = dataManager.currentList {
-            self.defaults.setObject(list.objectID.URIRepresentation().absoluteString, forKey: "lastListURI")
-            self.defaults.synchronize()
-        }
+        
     }
 
     func applicationWillEnterForeground(application: UIApplication) {

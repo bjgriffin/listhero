@@ -8,17 +8,10 @@
 
 import UIKit
 
-protocol CellActionDelegate {
-    func cellFavoriteChanged(cell:ListTableViewCell)
-    func cellCompleteChanged(cell:ListTableViewCell)
-}
-
 class ListTableViewCell: UITableViewCell {
     @IBOutlet weak var checkboxImageView: UIImageView!
     @IBOutlet weak var favoriteImageView: UIImageView!
     @IBOutlet weak var itemName: UILabel!
-    lazy var coreDataManager = CoreDataManager.sharedInstance
-    var delegate:CellActionDelegate?
     var item:ListItem?
 
     override func awakeFromNib() {
@@ -51,26 +44,24 @@ class ListTableViewCell: UITableViewCell {
     }
     
     func toggleCompleted() {
-        if self.item?.isComplete == true {
-            self.item?.isComplete = false
-        } else {
-            self.item?.isComplete = true
+        guard let item = item else { return }
+        dataManager.updateCompleted(item) {
+            error in
+            self.updateCompleted()
+//            NSNotificationCenter.defaultCenter().postNotificationName("completeUpdated", object: self, userInfo: nil)
         }
-        self.coreDataManager.saveMasterContext()
-        self.updateCompleted()
-        
-        self.delegate?.cellCompleteChanged(self)
     }
     
     func toggleFavorited() {
-        if self.item?.isFavorited == true {
-            self.item?.isFavorited = false
-        } else {
-            self.item?.isFavorited = true
+        guard let item = item else { return }
+        dataManager.updateFavorited(item) {
+            error in
+            self.updateFavorited()
+            dataManager.fetchFavorites() {
+                objects, error in
+                dataManager.favoriteItems = objects
+                NSNotificationCenter.defaultCenter().postNotificationName("favoriteUpdated", object: self, userInfo: nil)
+            }
         }
-        self.coreDataManager.saveMasterContext()
-        self.updateFavorited()
-        
-        self.delegate?.cellFavoriteChanged(self)
     }
 }

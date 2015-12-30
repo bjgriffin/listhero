@@ -7,31 +7,24 @@
 //
 
 import UIKit
+import CoreData
 
 class FavoritesViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
-    lazy var dataManager = DataManager.sharedInstance
-    lazy var sortedFavoriteItems = Array<ListItem>()
-    var favoriteItems:Array<ListItem>!
-    weak var checklistViewController : ChecklistViewController!
     
-    required init(coder aDecoder: NSCoder)
+    required init?(coder aDecoder: NSCoder)
     {
-        checklistViewController = UIStoryboard.checklistViewController()
-        var items = self.checklistViewController.currentList?.items.allObjects as? Array<ListItem>
-        favoriteItems = items?.filter({m in m.isFavorited == true})
-        
         super.init(coder: aDecoder)
     }
     
     override func viewDidLoad() {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyle.None;
-        self.tableView.backgroundColor = UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.0);
-        
-        var nib = UINib(nibName: "ListTableViewCell", bundle: nil)
-        self.tableView.registerNib(nib, forCellReuseIdentifier: "ListTableViewCell")
-        
+        let nib = UINib(nibName: "FavoriteTableViewCell", bundle: nil)
+        self.tableView.registerNib(nib, forCellReuseIdentifier: "FavoriteTableViewCell")
         self.tabBarItem.selectedImage = UIImage(named:"star-icon-favorited.png")
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "favoriteUpdated:", name: "favoriteUpdated", object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "completeUpdated:", name: "completeUpdated", object: nil)
         
         super.viewDidLoad()
     }
@@ -41,30 +34,29 @@ class FavoritesViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK: NSNotificationCenter callbacks
+    
+    func favoriteUpdated(notification:NSNotification) {
+        tableView.reloadData()
+    }
+    
     // MARK: UITableView Datasource Methods
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:FavoriteTableViewCell = self.tableView.dequeueReusableCellWithIdentifier("FavoriteTableViewCell") as! FavoriteTableViewCell
-        sortedFavoriteItems = favoriteItems.sorted({ $0.updatedAt.compare($1.updatedAt) == NSComparisonResult.OrderedAscending })
-            
-            var item:ListItem = self.sortedFavoriteItems[indexPath.row] as ListItem
-            
-            if item.objectID.URIRepresentation().absoluteString == self.checklistViewController.currentList?.objectID.URIRepresentation().absoluteString {
-                self.tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)
-            }
-            
+        let cell:FavoriteTableViewCell = self.tableView.dequeueReusableCellWithIdentifier("FavoriteTableViewCell") as! FavoriteTableViewCell
+        
+        if let item = dataManager.favoriteItems?[indexPath.row] {
             cell.itemName.text = item.name
-            
+            if item.objectID.URIRepresentation().absoluteString == dataManager.currentList?.objectID.URIRepresentation().absoluteString {
+                tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)
+            }
+        }
+        
         return cell
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var count:Int = 0
-        
-        if let items = self.favoriteItems {
-            count = items.count
-        }
-        return count
+        return dataManager.favoriteItems?.count ?? 0
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
