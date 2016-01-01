@@ -8,8 +8,11 @@
 import UIKit
 import CoreData
 
-class ChecklistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ChecklistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var trashBarButtonItem: UIBarButtonItem!
+    @IBOutlet weak var addBarButtonItem: UIBarButtonItem!
+    var popoverViewController : UIViewController?
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -30,6 +33,13 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "listsUpdated", name: "listsUpdated", object: nil)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        updateEnabledButtons()
+        if dataManager.currentList == nil {
+            showPopover()
+        }
+    }
+    
     func showSignUpAlert() {
         self.presentViewController(UserManager.showLoginAlertController(), animated: true, completion: nil)
     }
@@ -42,42 +52,56 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
                 splitViewContainerController?.setOverrideTraitCollection(UITraitCollection(horizontalSizeClass: .Regular), forChildViewController: splitViewController)
                 splitViewController.preferredPrimaryColumnWidthFraction = 0.5
                 splitViewController.preferredDisplayMode = .AllVisible
-                navigationItem.title = ""
+                if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+                    navigationItem.title = dataManager.currentList?.name
+                    navigationItem.titleView = nil
+                } else {
+                    navigationItem.title = nil
+                    navigationItem.titleView = nil
+                }
             } else {
                 splitViewContainerController?.setOverrideTraitCollection(UITraitCollection(horizontalSizeClass: .Compact), forChildViewController: splitViewController)
-                navigationItem.title = dataManager.currentList?.name
+                if dataManager.currentList == nil {
+                    showLogoTitleView()
+                    showPopover()
+                } else {
+                    navigationItem.titleView = nil
+                    navigationItem.title = dataManager.currentList?.name
+                }
             }
     }
     
     @IBAction func deleteItemsAction(sender:UIBarButtonItem) {
         let items = dataManager.currentList?.items.allObjects as? [ListItem]
         
-        let alertController:UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         
-        alertController.addAction(UIAlertAction(title: "Delete Completed Items?", style: UIAlertActionStyle.Default, handler: {
-            alertAction in
+        if items?.count > 0 {
+            alertController.addAction(UIAlertAction(title: "Delete Completed Items?", style: UIAlertActionStyle.Default, handler: {
+                alertAction in
+                
+                if let filteredArray = items?.filter({item in item.isComplete == true}) {
+                    for item in filteredArray {
+                        dataManager.deleteItem(item) {
+                            error in
+                            self.fetchUpdatedLists(false)
+                        }
+                    }
+                }
+            }))
             
-            if let filteredArray = items?.filter({item in item.isComplete == true}) {
-                for item in filteredArray {
-                    dataManager.deleteItem(item) {
-                        error in
-                        self.fetchUpdatedLists(false)
+            alertController.addAction(UIAlertAction(title: "Delete All Items?", style: UIAlertActionStyle.Default, handler: {
+                alertAction in
+                if let items = items {
+                    for item in items {
+                        dataManager.deleteItem(item) {
+                            error in
+                            self.fetchUpdatedLists(false)
+                        }
                     }
                 }
-            }
-        }))
-        
-        alertController.addAction(UIAlertAction(title: "Delete All Items?", style: UIAlertActionStyle.Default, handler: {
-            alertAction in
-            if let items = items {
-                for item in items {
-                    dataManager.deleteItem(item) {
-                        error in
-                        self.fetchUpdatedLists(false)
-                    }
-                }
-            }
-        }))
+            }))
+        }
         
         if let currentList = dataManager.currentList {
             alertController.addAction(UIAlertAction(title: "Delete \(currentList.name)?", style: UIAlertActionStyle.Default, handler: {
@@ -94,11 +118,15 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
             alertController.dismissViewControllerAnimated(true, completion: nil)
         }))
         
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.barButtonItem = trashBarButtonItem
+        }
+        
         self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     @IBAction func addItemAction(sender: AnyObject) {
-        let alertController:UIAlertController = UIAlertController(title: "New Item", message: "", preferredStyle: UIAlertControllerStyle.Alert)
+        let alertController = UIAlertController(title: "New Item", message: "", preferredStyle: UIAlertControllerStyle.Alert)
 
         alertController.addTextFieldWithConfigurationHandler({
             textField in
@@ -107,7 +135,7 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
         
         alertController.addTextFieldWithConfigurationHandler({
             textField in
-            textField.placeholder = "notes (optional)"
+            textField.placeholder = "note (optional)"
         })
         
         alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: {
@@ -123,6 +151,19 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
             
             let itemName = nameTextField.text ?? ""
             let notes = notesTextField.text ?? ""
+            
+            do {
+                try itemName.validate()
+            } catch let error as ValidateStringError {
+                switch error {
+                case .AlphanumericOnly:
+                    return
+                case .AtLeastThreeCharacters:
+                    return
+                }
+            } catch {
+                return
+            }
             
             if let currentList = dataManager.currentList {
                 dataManager.createItem(itemName, list: currentList, details: notes) {
@@ -141,7 +182,7 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
 
         alertController.addTextFieldWithConfigurationHandler({
             textField in
-            textField.placeholder = "list name"
+            textField.placeholder = "name"
         })
         
         alertController.addTextFieldWithConfigurationHandler({
@@ -159,14 +200,31 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
             let textFields = alertController.textFields ?? []
             let nameTextField = textFields[0]
             let categoryTextField = textFields[0]
-            
+
             let name = nameTextField.text ?? ""
             let category = categoryTextField.text ?? ""
+            
+            do {
+                try name.validate()
+            } catch let error as ValidateStringError {
+                switch error {
+                case .AlphanumericOnly:
+                    UIAlertController.showAlert("Error", message: "No special characters allowed in title", cancelButtonTitle: "OK", cancelButtonCompletion: nil)
+                    return
+                case .AtLeastThreeCharacters:
+                    UIAlertController.showAlert("Error", message: "Show at least three character", cancelButtonTitle: "OK", cancelButtonCompletion: nil)
+                    return
+                }
+            } catch {
+                UIAlertController.showAlert("Error", message: "Unknown", cancelButtonTitle: "OK", cancelButtonCompletion: nil)
+                return
+            }
 
             dataManager.createList(name, category: category) {
                 error in
                 if error == nil {
                     self.fetchUpdatedLists(true)
+                    self.updateEnabledButtons()
                 }
             }
         }))
@@ -180,8 +238,31 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func updateTitleToMatchCurrentList() {
-        guard let currentList = dataManager.currentList else { return }
-            navigationItem.title = currentList.name
+        guard let currentList = dataManager.currentList else {
+            navigationItem.title = nil
+            showLogoTitleView()
+            return
+        }
+        
+        navigationItem.title = currentList.name
+        navigationItem.titleView = nil
+    }
+    
+    //MARK: Navigation
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "popoverSegue" {
+            popoverViewController = segue.destinationViewController
+            popoverViewController?.modalPresentationStyle = .Popover
+            popoverViewController?.popoverPresentationController?.delegate = self
+            popoverViewController?.popoverPresentationController?.backgroundColor = UIColor(red: 0/225.0, green: 51/225.0, blue: 102/225.0, alpha: 1.0)
+        }
+    }
+    
+    //MARK: UIPopoverPresentationController Delegate
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .None
     }
     
     //MARK: NSNotificationCenter callbacks
@@ -195,13 +276,36 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func listsUpdated() {
         tableView.reloadData()
+        if !(splitViewController?.traitCollection.horizontalSizeClass == .Regular && UIDevice.currentDevice().userInterfaceIdiom == .Phone) {
+            updateTitleToMatchCurrentList()
+        }
+        updateEnabledButtons()
     }
     
+    func dismissPopover() {
+        popoverViewController?.dismissViewControllerAnimated(true, completion: nil)
+        popoverViewController = nil
+    }
     
     // MARK: Private Methods
     
+    private func showPopover() {
+        performSegueWithIdentifier("popoverSegue", sender: nil)
+       let _ = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: Selector("dismissPopover"), userInfo: nil, repeats: false)
+    }
+    
+    private func updateEnabledButtons() {
+        if dataManager.currentList == nil {
+            trashBarButtonItem.enabled = false
+            addBarButtonItem.enabled = false
+        } else {
+            trashBarButtonItem.enabled = true
+            addBarButtonItem.enabled = true
+        }
+    }
+    
     private func showLogoTitleView() {
-        let titleView = UIImageView(frame:CGRectMake(0, 0, 35, 35))
+        let titleView = UIImageView(frame:CGRectMake(0, 0, 150, 50))
         titleView.contentMode = .ScaleAspectFit
         titleView.image = UIImage(named: "ListHeroLogo")
         navigationItem.titleView = titleView
@@ -214,7 +318,6 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
             
             if shouldUpdateCurrentList {
                 dataManager.updateCurrentData()
-                self.updateTitleToMatchCurrentList()
             } else {
                 dataManager.updateCurrentListItems()
             }

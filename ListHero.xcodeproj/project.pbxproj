@@ -26,9 +26,13 @@
 		36860BF71C27A9CE00F78436 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 36860BF51C27A9CE00F78436 /* LaunchScreen.storyboard */; };
 		368CDF3719C863DE00624264 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368CDF3619C863DE00624264 /* MainTabBarController.swift */; };
 		368CDF3D19C868F000624264 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368CDF3C19C868F000624264 /* ProfileTableViewController.swift */; };
+		368F7F681C35CDB800B23339 /* UIAlertController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368F7F671C35CDB800B23339 /* UIAlertController+Ext.swift */; };
+		368F7F691C35CDB800B23339 /* UIAlertController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368F7F671C35CDB800B23339 /* UIAlertController+Ext.swift */; };
 		36922C1019D217B00002DC29 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36922C0F19D217B00002DC29 /* List.swift */; };
 		36922C1219D217BF0002DC29 /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36922C1119D217BF0002DC29 /* ListItem.swift */; };
 		36933AA519760CB70015FD2F /* ChecklistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36933AA419760CB70015FD2F /* ChecklistViewController.swift */; };
+		369538891C34F28E00A5981F /* String+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369538881C34F28E00A5981F /* String+Validation.swift */; };
+		3695388A1C34F28E00A5981F /* String+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369538881C34F28E00A5981F /* String+Validation.swift */; };
 		3698CA3419CD241200D273AE /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3698CA3319CD241200D273AE /* DataManager.swift */; };
 		369A908219C768DC00568D79 /* ListsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369A908119C768DC00568D79 /* ListsViewController.swift */; };
 		36A4F5F81C273E1A002CE27E /* WebServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A4F5F71C273E1A002CE27E /* WebServiceManager.swift */; };
@@ -86,9 +90,11 @@
 		36860BF51C27A9CE00F78436 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		368CDF3619C863DE00624264 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		368CDF3C19C868F000624264 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
+		368F7F671C35CDB800B23339 /* UIAlertController+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Ext.swift"; sourceTree = "<group>"; };
 		36922C0F19D217B00002DC29 /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = List.swift; path = ../List.swift; sourceTree = "<group>"; };
 		36922C1119D217BF0002DC29 /* ListItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListItem.swift; path = ../ListItem.swift; sourceTree = "<group>"; };
 		36933AA419760CB70015FD2F /* ChecklistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChecklistViewController.swift; sourceTree = "<group>"; };
+		369538881C34F28E00A5981F /* String+Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Validation.swift"; sourceTree = "<group>"; };
 		3698CA3319CD241200D273AE /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		369A908119C768DC00568D79 /* ListsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListsViewController.swift; sourceTree = "<group>"; };
 		36A4F5F71C273E1A002CE27E /* WebServiceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServiceManager.swift; sourceTree = "<group>"; };
@@ -307,6 +313,8 @@
 				A6B285561A6B7F7300CE5DB9 /* StoryboardExtension.swift */,
 				36A4F5FA1C273F70002CE27E /* NSDate+Ext.swift */,
 				36AB3ED91C2A4B8F00258D62 /* UIViewController+Ext.swift */,
+				369538881C34F28E00A5981F /* String+Validation.swift */,
+				368F7F671C35CDB800B23339 /* UIAlertController+Ext.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -426,6 +434,7 @@
 				36BEF3B419C0CB2F00C3E266 /* CoreDataManager.swift in Sources */,
 				36E810DE196E1BE30090F951 /* AppDelegate.swift in Sources */,
 				36AB3EDA1C2A4B8F00258D62 /* UIViewController+Ext.swift in Sources */,
+				368F7F681C35CDB800B23339 /* UIAlertController+Ext.swift in Sources */,
 				3698CA3419CD241200D273AE /* DataManager.swift in Sources */,
 				368CDF3719C863DE00624264 /* MainTabBarController.swift in Sources */,
 				366E656F19D4AC49006023FB /* FavoriteTableViewCell.swift in Sources */,
@@ -435,6 +444,7 @@
 				A6B285571A6B7F7300CE5DB9 /* StoryboardExtension.swift in Sources */,
 				36933AA519760CB70015FD2F /* ChecklistViewController.swift in Sources */,
 				366F14C119CB75F7000DA3A6 /* ChangePasswordViewController.swift in Sources */,
+				369538891C34F28E00A5981F /* String+Validation.swift in Sources */,
 				36AD6B52196F77A300EAFBED /* MainSplitViewController.swift in Sources */,
 				36922C1019D217B00002DC29 /* List.swift in Sources */,
 				360A76C219C29F4C00492502 /* UserManager.swift in Sources */,
@@ -451,8 +461,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				36A4F5FC1C273F70002CE27E /* NSDate+Ext.swift in Sources */,
+				368F7F691C35CDB800B23339 /* UIAlertController+Ext.swift in Sources */,
 				36A4F5F91C273E1A002CE27E /* WebServiceManager.swift in Sources */,
 				36AB3EDB1C2A4B8F00258D62 /* UIViewController+Ext.swift in Sources */,
+				3695388A1C34F28E00A5981F /* String+Validation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,6 +498,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -529,6 +542,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;

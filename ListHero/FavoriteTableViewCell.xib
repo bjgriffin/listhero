@@ -33,6 +33,9 @@
                         <state key="normal" title="Add">
                             <color key="titleColor" red="0.0" green="0.20000000000000001" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
+                        <connections>
+                            <action selector="addToListAction:" destination="V8h-zW-EPT" eventType="touchUpInside" id="8V1-qC-7Ta"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>

@@ -46,6 +46,7 @@ class FavoritesViewController: UIViewController {
         let cell:FavoriteTableViewCell = self.tableView.dequeueReusableCellWithIdentifier("FavoriteTableViewCell") as! FavoriteTableViewCell
         
         if let item = dataManager.favoriteItems?[indexPath.row] {
+            cell.item = item
             cell.itemName.text = item.name
             if item.objectID.URIRepresentation().absoluteString == dataManager.currentList?.objectID.URIRepresentation().absoluteString {
                 tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: UITableViewScrollPosition.None)

@@ -88,6 +88,17 @@ class CoreDataManager:NSObject {
         }
     }
     
+    //MARK: Add Methods
+    
+    func addItem(list:List, listItem:ListItem, name:String, details:String, completion:(error:ErrorType?) -> Void) {
+        list.addItems(NSSet(array: [listItem]))
+        
+        saveContext() {
+            error in
+            completion(error: error)
+        }
+    }
+    
     //MARK: Create Methods Core Data
     
     func createList(name:String, category:String, completion:(error:ErrorType?) -> Void) {
@@ -123,7 +134,12 @@ class CoreDataManager:NSObject {
     //MARK: Create Methods Core Data
 
     func deleteItem(item:ListItem, completion:(error:ErrorType?) -> Void) {
-        masterManagedObjectContext.deleteObject(item)
+        if item.isFavorited.boolValue {
+            dataManager.currentList?.removeItems(NSSet(array:[item]))
+        } else {
+            masterManagedObjectContext.deleteObject(item)
+        }
+        
         saveContext() {
             error in
             completion(error: error)

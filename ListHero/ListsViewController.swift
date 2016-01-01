@@ -85,7 +85,7 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         alertController.addTextFieldWithConfigurationHandler({
             textField in
-            textField.placeholder = "new list title"
+            textField.placeholder = "new title"
         })
         alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: {
             alertAction in
@@ -99,7 +99,16 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             if let list = cell.list, name = nameTextField.text {
                 dataManager.updateItemName(list, name: name) {
                     error in
-                    alertController.dismissViewControllerAnimated(true, completion: nil)
+                    if let currentList = dataManager.currentList {
+                        dataManager.fetchLists() {
+                            objects, error in
+                            dataManager.lists = objects
+                            dataManager.updateCurrentList(currentList.objectID.URIRepresentation().absoluteString)
+                            dataManager.updateCurrentListItems()
+                            alertController.dismissViewControllerAnimated(true, completion: nil)
+                            NSNotificationCenter.defaultCenter().postNotificationName("listsUpdated", object: nil, userInfo: nil)
+                        }
+                    }
                 }
             }
         }))

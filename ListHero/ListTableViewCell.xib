@@ -18,19 +18,19 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="incomplete.png" translatesAutoresizingMaskIntoConstraints="NO" id="1cG-GT-BRF">
                         <rect key="frame" x="6" y="5" width="34" height="34"/>
                         <constraints>
-                            <constraint firstAttribute="height" priority="250" constant="34" id="JNq-gg-3kH"/>
-                            <constraint firstAttribute="width" priority="250" constant="34" id="nfF-yk-9t5"/>
+                            <constraint firstAttribute="height" constant="34" id="JNq-gg-3kH"/>
+                            <constraint firstAttribute="width" constant="34" id="nfF-yk-9t5"/>
                         </constraints>
                     </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star-icon-unfavorited.png" translatesAutoresizingMaskIntoConstraints="NO" id="Rel-YK-nVg">
                         <rect key="frame" x="278" y="5" width="34" height="34"/>
                         <constraints>
-                            <constraint firstAttribute="width" priority="250" constant="34" id="5PY-lm-BMW"/>
-                            <constraint firstAttribute="height" priority="250" constant="34" id="Qle-Pa-gAb"/>
+                            <constraint firstAttribute="width" constant="34" id="5PY-lm-BMW"/>
+                            <constraint firstAttribute="height" constant="34" id="Qle-Pa-gAb"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehC-GJ-tkf">
-                        <rect key="frame" x="55" y="12" width="210" height="21"/>
+                        <rect key="frame" x="55" y="12" width="210" height="20.5"/>
                         <constraints>
                             <constraint firstAttribute="width" priority="250" constant="210" id="69G-Xz-mew"/>
                             <constraint firstAttribute="height" priority="250" constant="21" id="DI9-y5-hNT"/>

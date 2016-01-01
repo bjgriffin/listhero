@@ -57,7 +57,7 @@ class DataManager: NSObject {
     }
 
     func updateCurrentList() {
-        currentList = lists?.last
+        currentList = lists?.first
     }
     
     func updateCurrentList(id:String) {
@@ -88,6 +88,26 @@ class DataManager: NSObject {
             error in
             completion(error:error)
         }
+    }
+    
+    //MARK: Add Methods
+
+    func addItem(list:List, listItem:ListItem, name:String, details:String, completion:(error:ErrorType?) -> Void) {
+        if PFUser.currentUser() != nil {
+        //    webServiceManager.createItemRemote(name, list: list, details: details) {
+        //        error in
+        //        self.coreDataManager.createItem(name, list: list, details: details) {
+        //            error in
+        //            completion(error:error)
+        //    }
+        //    }
+        } else {
+            coreDataManager.addItem(list, listItem: listItem, name: name, details: details) {
+                error in
+                completion(error:error)
+            }
+        }
+        
     }
     
     //MARK: Create Methods

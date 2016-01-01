@@ -24,4 +24,5 @@ class List: NSManagedObject {
     @NSManaged var items: NSSet
     
     @NSManaged func addItems(items: NSSet)
+    @NSManaged func removeItems(items: NSSet)
 }
