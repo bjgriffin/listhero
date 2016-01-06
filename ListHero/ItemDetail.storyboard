@@ -6,10 +6,10 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Detail View Controller-->
         <scene sceneID="fq8-Um-Cei">
             <objects>
-                <viewController id="uoY-Z0-lKZ" sceneMemberID="viewController">
+                <viewController id="uoY-Z0-lKZ" customClass="DetailViewController" customModule="ListHero" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="JJA-g2-pJZ"/>
                         <viewControllerLayoutGuide type="bottom" id="lzj-AS-OtI"/>
@@ -18,30 +18,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5XC-wf-cCm">
-                                <rect key="frame" x="20" y="28" width="560" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes:" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5XC-wf-cCm">
+                                <rect key="frame" x="20" y="40" width="560" height="20"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="PZW-HD-Q4a">
-                                <rect key="frame" x="20" y="68.5" width="560" height="531.5"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <rect key="frame" x="20" y="65" width="560" height="455"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="5XC-wf-cCm" firstAttribute="top" secondItem="JJA-g2-pJZ" secondAttribute="bottom" constant="8" id="6Bt-03-nXf"/>
-                            <constraint firstItem="PZW-HD-Q4a" firstAttribute="top" secondItem="5XC-wf-cCm" secondAttribute="bottom" constant="20" id="BDR-og-1NC"/>
-                            <constraint firstItem="lzj-AS-OtI" firstAttribute="top" secondItem="PZW-HD-Q4a" secondAttribute="bottom" id="BJe-KA-eD5"/>
+                            <constraint firstItem="5XC-wf-cCm" firstAttribute="top" secondItem="JJA-g2-pJZ" secondAttribute="bottom" constant="20" id="6Bt-03-nXf"/>
+                            <constraint firstItem="PZW-HD-Q4a" firstAttribute="top" secondItem="5XC-wf-cCm" secondAttribute="bottom" constant="5" id="BDR-og-1NC"/>
+                            <constraint firstItem="lzj-AS-OtI" firstAttribute="top" secondItem="PZW-HD-Q4a" secondAttribute="bottom" constant="80" id="BJe-KA-eD5"/>
                             <constraint firstAttribute="leadingMargin" secondItem="PZW-HD-Q4a" secondAttribute="leading" id="EMW-Hz-JdT"/>
                             <constraint firstAttribute="trailingMargin" secondItem="PZW-HD-Q4a" secondAttribute="trailing" id="OdY-jA-bUT"/>
                             <constraint firstAttribute="leadingMargin" secondItem="5XC-wf-cCm" secondAttribute="leading" id="f9l-ac-zp2"/>
                             <constraint firstAttribute="trailingMargin" secondItem="5XC-wf-cCm" secondAttribute="trailing" id="rxd-Gx-SfC"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="detailTextView" destination="PZW-HD-Q4a" id="Opl-6w-nNA"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ooO-J4-mUO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -83,8 +83,15 @@ class DataManager: NSObject {
         }
     }
     
-    func updateItemName(list:List, name:String, completion:(error:ErrorType?) -> Void) {
+    func updateListName(list:List, name:String, completion:(error:ErrorType?) -> Void) {
         coreDataManager.updateListName(list, name: name) {
+            error in
+            completion(error:error)
+        }
+    }
+    
+    func updateItemDetail(item:ListItem, detail:String, completion:(error:ErrorType?) -> Void) {
+        coreDataManager.updateItemDetail(item, detail: detail) {
             error in
             completion(error:error)
         }

@@ -46,6 +46,7 @@
                     <constraint firstItem="o0C-On-SkQ" firstAttribute="leading" secondItem="ZNe-bi-oFu" secondAttribute="leadingMargin" id="zsa-IL-cfX"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="itemName" destination="o0C-On-SkQ" id="UgJ-Pv-8zx"/>
                 <outlet property="plusButton" destination="67k-uj-NvY" id="ZKX-uX-mDu"/>

@@ -50,6 +50,7 @@
                     <constraint firstItem="Rel-YK-nVg" firstAttribute="trailing" secondItem="TMM-0G-iwg" secondAttribute="trailingMargin" id="wHI-rV-3BL"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="checkboxImageView" destination="1cG-GT-BRF" id="2vq-HS-2eu"/>
                 <outlet property="favoriteImageView" destination="Rel-YK-nVg" id="PHK-tM-oWk"/>

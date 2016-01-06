@@ -68,7 +68,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.0" green="0.20000000000000001" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.20000000000000001" blue="0.40000000000000002" alpha="0.5" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="rsP-rz-em4" firstAttribute="leading" secondItem="bil-nA-CZ8" secondAttribute="leadingMargin" constant="-13" id="VjX-2o-Z6j"/>
                             <constraint firstItem="rsP-rz-em4" firstAttribute="centerY" secondItem="bil-nA-CZ8" secondAttribute="centerY" id="aYE-13-PaB"/>
@@ -83,6 +83,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="USg-sq-Zym" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1562" y="649"/>
+        </scene>
+        <!--ItemDetail-->
+        <scene sceneID="G4r-1o-Ftg">
+            <objects>
+                <viewControllerPlaceholder storyboardName="ItemDetail" id="8MS-CT-q6D" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Wx-uS-I3I" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1715" y="1000"/>
         </scene>
         <!--Lists-->
         <scene sceneID="RFM-uJ-rmi">
@@ -274,6 +282,7 @@
                         <segue destination="0CX-wi-OEH" kind="popoverPresentation" identifier="popoverSegue" popoverAnchorBarButtonItem="ard-22-1PG" id="UiL-az-KNZ">
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                         </segue>
+                        <segue destination="8MS-CT-q6D" kind="show" identifier="detail" id="pps-0p-Us4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="anC-Gy-iHo" userLabel="First Responder" sceneMemberID="firstResponder"/>

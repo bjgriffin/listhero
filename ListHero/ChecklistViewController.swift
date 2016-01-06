@@ -22,7 +22,6 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.separatorStyle = UITableViewCellSeparatorStyle.None;
-        tableView.allowsSelection = false
         
         updateTitleToMatchCurrentList()
         
@@ -35,6 +34,9 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     
     override func viewWillAppear(animated: Bool) {
         updateEnabledButtons()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         if dataManager.currentList == nil {
             showPopover()
         }
@@ -135,7 +137,7 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
         
         alertController.addTextFieldWithConfigurationHandler({
             textField in
-            textField.placeholder = "note (optional)"
+            textField.placeholder = "notes"
         })
         
         alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: {
@@ -185,10 +187,11 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
             textField.placeholder = "name"
         })
         
-        alertController.addTextFieldWithConfigurationHandler({
-            textField in
-            textField.placeholder = "category (optional)"
-        })
+        //TODO: Un-comment for v2.0
+//        alertController.addTextFieldWithConfigurationHandler({
+//            textField in
+//            textField.placeholder = "category"
+//        })
         
         alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Default, handler: {
             alertAction in
@@ -255,7 +258,15 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
             popoverViewController = segue.destinationViewController
             popoverViewController?.modalPresentationStyle = .Popover
             popoverViewController?.popoverPresentationController?.delegate = self
-            popoverViewController?.popoverPresentationController?.backgroundColor = UIColor(red: 0/225.0, green: 51/225.0, blue: 102/225.0, alpha: 1.0)
+            popoverViewController?.popoverPresentationController?.backgroundColor = UIColor(red: 0/225.0, green: 51/225.0, blue: 102/225.0, alpha: 0.5)
+        } else if segue.identifier == "detail" {
+            if let indexPath = sender as? NSIndexPath {
+                let item = dataManager.currentListItems?[indexPath.row]
+                if let controller = segue.destinationViewController as? DetailViewController {
+                    controller.item = item
+                }
+            }
+
         }
     }
     
@@ -291,7 +302,7 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     
     private func showPopover() {
         performSegueWithIdentifier("popoverSegue", sender: nil)
-       let _ = NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: Selector("dismissPopover"), userInfo: nil, repeats: false)
+       let _ = NSTimer.scheduledTimerWithTimeInterval(1.5, target: self, selector: Selector("dismissPopover"), userInfo: nil, repeats: false)
     }
     
     private func updateEnabledButtons() {
@@ -357,7 +368,8 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
     // MARK: UITableView Delegate Methods
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        performSegueWithIdentifier("detail", sender: indexPath)
     }
     
 }

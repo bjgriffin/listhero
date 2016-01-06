@@ -60,6 +60,16 @@ class CoreDataManager:NSObject {
         }
     }
     
+    func updateItemDetail(item:ListItem, detail:String, completion:(error:ErrorType?) -> Void) {
+        item.details = detail
+        item.updatedAt = NSDate()
+        
+        saveContext() {
+            error in
+            completion(error: error)
+        }
+    }
+    
     func updateFavorited(item:ListItem, completion:(error:ErrorType?) -> Void) {
         if item.isFavorited == true {
             item.isFavorited = false

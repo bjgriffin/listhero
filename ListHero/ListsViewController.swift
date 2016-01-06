@@ -97,7 +97,7 @@ class ListsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             let nameTextField:UITextField = textFields[0]
             
             if let list = cell.list, name = nameTextField.text {
-                dataManager.updateItemName(list, name: name) {
+                dataManager.updateListName(list, name: name) {
                     error in
                     if let currentList = dataManager.currentList {
                         dataManager.fetchLists() {

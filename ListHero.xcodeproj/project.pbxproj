@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		360A76C219C29F4C00492502 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360A76C119C29F4C00492502 /* UserManager.swift */; };
+		362ED9B11C39BA0100900B24 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362ED9B01C39BA0100900B24 /* DetailViewController.swift */; };
+		362ED9B21C39BA0100900B24 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362ED9B01C39BA0100900B24 /* DetailViewController.swift */; };
+		362ED9B31C39D83200900B24 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36E810E2196E1BE30090F951 /* Images.xcassets */; };
 		364864C51C14D1EC00BCCEA8 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 364864C41C14D1EC00BCCEA8 /* Login.storyboard */; };
 		364864C61C14D1EC00BCCEA8 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 364864C41C14D1EC00BCCEA8 /* Login.storyboard */; };
 		364864C81C14D38300BCCEA8 /* ItemDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 364864C71C14D38300BCCEA8 /* ItemDetail.storyboard */; };
@@ -75,6 +78,7 @@
 
 /* Begin PBXFileReference section */
 		360A76C119C29F4C00492502 /* UserManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		362ED9B01C39BA0100900B24 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		364864C41C14D1EC00BCCEA8 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		364864C71C14D38300BCCEA8 /* ItemDetail.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ItemDetail.storyboard; sourceTree = "<group>"; };
 		3656DFF819DA3B5F0058B435 /* FavoritesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
@@ -187,6 +191,7 @@
 				366F14C019CB75F7000DA3A6 /* ChangePasswordViewController.swift */,
 				366F14BE19CB66DF000DA3A6 /* ChangeEmailViewController.swift */,
 				3656DFF819DA3B5F0058B435 /* FavoritesViewController.swift */,
+				362ED9B01C39BA0100900B24 /* DetailViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -414,6 +419,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				362ED9B31C39D83200900B24 /* Images.xcassets in Resources */,
 				364864C61C14D1EC00BCCEA8 /* Login.storyboard in Resources */,
 				36860BF71C27A9CE00F78436 /* LaunchScreen.storyboard in Resources */,
 				364864C91C14D38300BCCEA8 /* ItemDetail.storyboard in Resources */,
@@ -441,6 +447,7 @@
 				36A4F5F81C273E1A002CE27E /* WebServiceManager.swift in Sources */,
 				36E810E1196E1BE30090F951 /* ListHero.xcdatamodeld in Sources */,
 				366EC6621972456000FFA9EF /* ContainerViewController.swift in Sources */,
+				362ED9B11C39BA0100900B24 /* DetailViewController.swift in Sources */,
 				A6B285571A6B7F7300CE5DB9 /* StoryboardExtension.swift in Sources */,
 				36933AA519760CB70015FD2F /* ChecklistViewController.swift in Sources */,
 				366F14C119CB75F7000DA3A6 /* ChangePasswordViewController.swift in Sources */,
@@ -463,6 +470,7 @@
 				36A4F5FC1C273F70002CE27E /* NSDate+Ext.swift in Sources */,
 				368F7F691C35CDB800B23339 /* UIAlertController+Ext.swift in Sources */,
 				36A4F5F91C273E1A002CE27E /* WebServiceManager.swift in Sources */,
+				362ED9B21C39BA0100900B24 /* DetailViewController.swift in Sources */,
 				36AB3EDB1C2A4B8F00258D62 /* UIViewController+Ext.swift in Sources */,
 				3695388A1C34F28E00A5981F /* String+Validation.swift in Sources */,
 			);
@@ -483,6 +491,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -527,6 +536,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;

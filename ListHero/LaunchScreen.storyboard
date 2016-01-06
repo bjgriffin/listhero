@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="de2-1T-Rdx">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -18,24 +17,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="List Hero" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Got-mD-UOg">
-                                <rect key="frame" x="20" y="84" width="560" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ListHeroLogo" translatesAutoresizingMaskIntoConstraints="NO" id="tIt-6n-K3V">
+                                <rect key="frame" x="228" y="276" width="144" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="1b3-VW-Mul">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="48"/>
+                                    </constraint>
+                                    <constraint firstAttribute="width" constant="144" id="bBS-Ng-ULn">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="144"/>
+                                    </constraint>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Got-mD-UOg" firstAttribute="leading" secondItem="0Ys-SG-4A3" secondAttribute="leadingMargin" id="Bcz-h8-d00"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Got-mD-UOg" secondAttribute="trailing" id="Mhy-T5-qDL"/>
-                            <constraint firstItem="Got-mD-UOg" firstAttribute="top" secondItem="rOO-Er-MbA" secondAttribute="bottom" constant="64" id="nwM-RF-GbA"/>
+                            <constraint firstItem="tIt-6n-K3V" firstAttribute="centerY" secondItem="0Ys-SG-4A3" secondAttribute="centerY" id="e2w-T0-E8Q"/>
+                            <constraint firstItem="tIt-6n-K3V" firstAttribute="centerX" secondItem="0Ys-SG-4A3" secondAttribute="centerX" id="ymG-Gj-9Vw"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rjc-IE-Av8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="344" y="245"/>
+            <point key="canvasLocation" x="343.5" y="244.5"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ListHeroLogo" width="144" height="48"/>
+    </resources>
 </document>
