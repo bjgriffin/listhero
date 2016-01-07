@@ -132,7 +132,7 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
 
         alertController.addTextFieldWithConfigurationHandler({
             textField in
-            textField.placeholder = "item name"
+            textField.placeholder = "name"
         })
         
         alertController.addTextFieldWithConfigurationHandler({
@@ -159,11 +159,17 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
             } catch let error as ValidateStringError {
                 switch error {
                 case .AlphanumericOnly:
+                    UIAlertController.showAlert("Error", message: "Alphanumeric characters only", cancelButtonTitle: "OK", cancelButtonCompletion: nil)
                     return
                 case .AtLeastThreeCharacters:
+                    UIAlertController.showAlert("Error", message: "Show at least three character", cancelButtonTitle: "OK", cancelButtonCompletion: nil)
+                    return
+                case .EmptyString:
+                    UIAlertController.showAlert("Error", message: "Field is empty", cancelButtonTitle: "OK", cancelButtonCompletion: nil)
                     return
                 }
             } catch {
+                UIAlertController.showAlert("Error", message: "Unknown", cancelButtonTitle: "OK", cancelButtonCompletion: nil)
                 return
             }
             
@@ -212,10 +218,13 @@ class ChecklistViewController: UIViewController, UITableViewDelegate, UITableVie
             } catch let error as ValidateStringError {
                 switch error {
                 case .AlphanumericOnly:
-                    UIAlertController.showAlert("Error", message: "No special characters allowed in title", cancelButtonTitle: "OK", cancelButtonCompletion: nil)
+                    UIAlertController.showAlert("Error", message: "Alphanumeric characters only", cancelButtonTitle: "OK", cancelButtonCompletion: nil)
                     return
                 case .AtLeastThreeCharacters:
                     UIAlertController.showAlert("Error", message: "Show at least three character", cancelButtonTitle: "OK", cancelButtonCompletion: nil)
+                    return
+                case .EmptyString:
+                    UIAlertController.showAlert("Error", message: "Field is empty", cancelButtonTitle: "OK", cancelButtonCompletion: nil)
                     return
                 }
             } catch {

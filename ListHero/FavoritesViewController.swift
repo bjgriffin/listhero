@@ -11,6 +11,7 @@ import CoreData
 
 class FavoritesViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var topLayoutConstraint: NSLayoutConstraint!
     
     required init?(coder aDecoder: NSCoder)
     {
@@ -24,9 +25,16 @@ class FavoritesViewController: UIViewController {
         self.tabBarItem.selectedImage = UIImage(named:"star-icon-favorited.png")
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "favoriteUpdated:", name: "favoriteUpdated", object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "completeUpdated:", name: "completeUpdated", object: nil)
         
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        let systemVersion = UIDevice.currentDevice().systemVersion
+        
+        if systemVersion < "9.0" {
+            topLayoutConstraint.constant = 0
+        }
     }
 
     override func didReceiveMemoryWarning() {

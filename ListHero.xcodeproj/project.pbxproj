@@ -11,8 +11,6 @@
 		362ED9B11C39BA0100900B24 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362ED9B01C39BA0100900B24 /* DetailViewController.swift */; };
 		362ED9B21C39BA0100900B24 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 362ED9B01C39BA0100900B24 /* DetailViewController.swift */; };
 		362ED9B31C39D83200900B24 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36E810E2196E1BE30090F951 /* Images.xcassets */; };
-		364864C51C14D1EC00BCCEA8 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 364864C41C14D1EC00BCCEA8 /* Login.storyboard */; };
-		364864C61C14D1EC00BCCEA8 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 364864C41C14D1EC00BCCEA8 /* Login.storyboard */; };
 		364864C81C14D38300BCCEA8 /* ItemDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 364864C71C14D38300BCCEA8 /* ItemDetail.storyboard */; };
 		364864C91C14D38300BCCEA8 /* ItemDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 364864C71C14D38300BCCEA8 /* ItemDetail.storyboard */; };
 		3656DFF919DA3B5F0058B435 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3656DFF819DA3B5F0058B435 /* FavoritesViewController.swift */; };
@@ -369,7 +367,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "BJ Griffin";
 				TargetAttributes = {
 					36E810D7196E1BE30090F951 = {
@@ -404,7 +402,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				364864C51C14D1EC00BCCEA8 /* Login.storyboard in Resources */,
 				36860BF61C27A9CE00F78436 /* LaunchScreen.storyboard in Resources */,
 				36E810E3196E1BE30090F951 /* Images.xcassets in Resources */,
 				366E657519D4AD96006023FB /* DrawerTableViewCell.xib in Resources */,
@@ -420,7 +417,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				362ED9B31C39D83200900B24 /* Images.xcassets in Resources */,
-				364864C61C14D1EC00BCCEA8 /* Login.storyboard in Resources */,
 				36860BF71C27A9CE00F78436 /* LaunchScreen.storyboard in Resources */,
 				364864C91C14D38300BCCEA8 /* ItemDetail.storyboard in Resources */,
 				36E810FA196E28ED0090F951 /* MainStoryboard.storyboard in Resources */,
@@ -509,6 +505,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -582,6 +579,7 @@
 				);
 				INFOPLIST_FILE = ListHero/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bjgriffin.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ListHero-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -601,6 +599,7 @@
 				);
 				INFOPLIST_FILE = ListHero/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bjgriffin.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ListHero-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -623,6 +622,7 @@
 				INFOPLIST_FILE = ListHeroTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bjgriffin.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -641,6 +641,7 @@
 				INFOPLIST_FILE = ListHeroTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bjgriffin.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};

@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             objects, error in
             dataManager.favoriteItems = objects
         }
-        
+                
         return true
     }
 

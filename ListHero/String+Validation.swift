@@ -9,7 +9,7 @@
 import Foundation
 
 enum ValidateStringError: ErrorType {
-    case AlphanumericOnly, AtLeastThreeCharacters
+    case AlphanumericOnly, AtLeastThreeCharacters, EmptyString
 }
 
 extension String {
@@ -19,7 +19,11 @@ extension String {
         guard characters.count > 2
             else { throw ValidateStringError.AtLeastThreeCharacters }
         
-        guard rangeOfCharacterFromSet(NSCharacterSet.alphanumericCharacterSet().invertedSet, options: .LiteralSearch, range: nil) == nil
+        guard rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 ").invertedSet, options: .LiteralSearch, range: nil) == nil
             else { throw ValidateStringError.AlphanumericOnly }
+        
+        let characterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+        guard !self.stringByTrimmingCharactersInSet(characterSet).isEmpty
+            else { throw ValidateStringError.EmptyString }
     }
 }

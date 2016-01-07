@@ -26,7 +26,7 @@ class FavoriteTableViewCell: UITableViewCell {
 
     @IBAction func addToListAction(sender: AnyObject) {
         if let currentList = dataManager.currentList, item = item {
-            dataManager.addItem(currentList, listItem: item, name: item.name, details: item.details) {
+            dataManager.createItem(item.name, list: currentList, details: item.details) {
                 error in
                 dataManager.fetchLists() {
                     objects, error in

@@ -22,10 +22,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="QcO-Kz-3jt">
                                 <rect key="frame" x="0.0" y="-22" width="600" height="573"/>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" priority="250" constant="600" id="4MR-JL-Djx"/>
-                                    <constraint firstAttribute="height" priority="250" constant="507" id="7bc-GU-Jna"/>
-                                </constraints>
                                 <connections>
                                     <outlet property="dataSource" destination="8TJ-9z-FxA" id="pjF-bk-Qj1"/>
                                     <outlet property="delegate" destination="8TJ-9z-FxA" id="RQR-pv-Wed"/>
@@ -43,6 +39,7 @@
                     <tabBarItem key="tabBarItem" title="Favorites" image="star-icon-favorited.png" selectedImage="star-icon-favorited.png" id="SnM-Mt-jr3"/>
                     <connections>
                         <outlet property="tableView" destination="QcO-Kz-3jt" id="a8m-y6-qGH"/>
+                        <outlet property="topLayoutConstraint" destination="HSf-XV-IZP" id="07Z-MP-PXg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sZd-Jk-WnL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -107,10 +104,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="9q7-Eh-XVo">
                                 <rect key="frame" x="0.0" y="-22" width="600" height="573"/>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" priority="250" constant="507" id="Ci4-fz-kjb"/>
-                                    <constraint firstAttribute="width" priority="250" constant="600" id="V1J-NJ-MAT"/>
-                                </constraints>
                                 <connections>
                                     <outlet property="dataSource" destination="1fs-Bp-LMK" id="dEv-KT-rcb"/>
                                     <outlet property="delegate" destination="1fs-Bp-LMK" id="kI4-M7-3MM"/>
@@ -195,6 +188,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="GHC-l9-Rw1">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.0" green="0.20000000000000001" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <connections>
                         <segue destination="8dT-wP-8Pb" kind="relationship" relationship="rootViewController" id="RsS-H2-5F9"/>
@@ -217,7 +211,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ck6-Zc-6X5">
-                                <rect key="frame" x="0.0" y="-2" width="600" height="558"/>
+                                <rect key="frame" x="0.0" y="-22" width="600" height="578"/>
                                 <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <variation key="heightClass=compact" misplaced="YES">
                                     <rect key="frame" x="0.0" y="84" width="600" height="256"/>
@@ -272,8 +266,6 @@
                             </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="addBarButtonItem" destination="lXL-tA-kFR" id="GeE-Qg-9od"/>
                         <outlet property="tableView" destination="ck6-Zc-6X5" id="BQj-hZ-753"/>
@@ -327,4 +319,5 @@
         <image name="pencil-icon-tab.png" width="32" height="32"/>
         <image name="star-icon-favorited.png" width="34" height="34"/>
     </resources>
+    <color key="tintColor" red="0.0" green="0.20000000000000001" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
 </document>
